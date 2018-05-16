@@ -12,7 +12,7 @@ def get_article_dict(article):
       'title': <str>,
       'section': <str>,
       'publish_time': <Y-m-d>,
-      'images': [<str, image_url, ...>, ],
+      'images': [<str, image_url>, ...],
       'content': [
         {
           'type': <text/image>,
