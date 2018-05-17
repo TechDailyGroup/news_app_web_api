@@ -15,9 +15,9 @@ class Article(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     publish_time = models.DateTimeField(auto_now_add=True)
-    image1_url = models.URLField(null=True)
-    image2_url = models.URLField(null=True)
-    image3_url = models.URLField(null=True)
+    image1_url = models.CharField(max_length=160, null=True)
+    image2_url = models.CharField(max_length=160, null=True)
+    image3_url = models.CharField(max_length=160, null=True)
     # json format 
     # [
     #   {'type': <str, 'text'/'image'>, 
