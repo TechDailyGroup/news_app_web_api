@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
@@ -6,6 +8,19 @@ from django.http import HttpResponse, JsonResponse
 from main.models import Article
 from external_data_access.models import ArticleText
 from utils.api_utils import get_json_dict
+
+def __get_article_text(article):
+
+    ret = ""
+    
+    article_elem_list = json.loads(article.content)
+
+    for elem in article_elem_list:
+        if elem['type'] == 'text':
+            ret = ret + elem['data'] + "\n"
+
+    return ret
+    
 
 @login_required
 @require_GET
@@ -31,7 +46,6 @@ def get_latest_articles(request):
     if request.user.username != "nlp":
         return HttpResponse("Permission Denied")
 
-    print(dir(request.user))
     count = int(request.GET['count'])
     count = min(count, 1000)
     articles = Article.objects.filter().order_by('publish_time')[0:count]
@@ -39,9 +53,9 @@ def get_latest_articles(request):
     articles_json_data = []
 
     for article in articles:
-        if article.article_text.text == None:
-            article.article_text.text = __get_article_text(article)
-            article.article_text.save()
+        if not hasattr(article, 'article_text'):
+            article_text = ArticleText(article=article, text=__get_article_text(article))
+            article_text.save()
         article_dict = {
             'id': article.id,
             'title': article.title,
