@@ -299,3 +299,41 @@ count: <int>
 	}, ...]
 }
 ```
+
+## Mind Graph
+
+### POST /mind_graph/set_article_tags/ (login required, username must be 'nlp')
+
+#### request
+
+```json
+{
+	'id': <int>,
+	'tags': {
+		'level1': <str>,
+		'level2': <str>,
+		'level3': <str>
+	}
+}
+```
+
+#### response
+
+No data
+
+### GET /mind_graph/
+
+#### request
+
+time: <str, format of '%Y-%m-%d %H:%M:%S'>
+
+#### response
+
+```json
+'mind_graph': [{
+	      'level1': <str>,
+	      'level2': <str>,
+	      'level3': <str>,
+	      'count': int
+}, ...]
+```
