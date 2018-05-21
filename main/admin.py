@@ -8,7 +8,7 @@ class SectionAdmin(admin.ModelAdmin):
     search_fields = ('creator__user__username', 'name')
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'section')
+    list_display = ('title', 'section', 'publish_time')
     list_filter = ('section__name', )
     search_fields = ('title', 'section__name')
 

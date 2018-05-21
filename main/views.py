@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -115,6 +116,14 @@ def publish_article(request):
     section = received_data['section']
     content = received_data['content']
 
+    # TODO - remove code block
+    try:
+        publish_time_str = received_data['publish_time']
+        publish_time = datetime.strptime(publish_time_str, "%Y-%m-%d %H:%M:%S")
+    except:
+        publish_time = None
+    # END TODO
+
     section = Section.objects.get(name=section)
     account = request.user.account
 
@@ -130,7 +139,13 @@ def publish_article(request):
     new_article.image3_url = images[2]
     
     new_article.save()
-
+    
+    # TODO - remove code block
+    if publish_time != None:
+        new_article.publish_time = publish_time
+        new_article.save()
+    # END TODO
+    
     return JsonResponse(get_json_dict(data={}))
 
 @require_GET

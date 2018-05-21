@@ -27,4 +27,5 @@ urlpatterns = [
     path('api/', include("main.urls")),
     path('picture_bed/', include("picture_bed.urls")),
     path('external_data_access/', include("external_data_access.urls")),
+    path('mind_graph/', include("mind_graph.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
