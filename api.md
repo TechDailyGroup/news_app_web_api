@@ -179,7 +179,9 @@ No data
 
 #### request
 
+```
 keyword: <str>
+```
 
 #### response
 
@@ -203,7 +205,7 @@ keyword: <str>
 
 No data
 
-### GET /api/section/unsubscribe/
+### POST /api/section/unsubscribe/
 
 #### request
 
@@ -221,8 +223,10 @@ No data
 
 #### request
 
+```
 section: <str>
 page: <int>
+```
 
 #### response
 
@@ -236,7 +240,9 @@ page: <int>
 
 #### request
 
+```
 id: <int>
+```
 
 #### response
 
@@ -284,8 +290,10 @@ picture: <file, an image file>
 
 #### request
 
+```
 section: <str>
 count: <int>
+```
 
 #### response
 
@@ -325,7 +333,9 @@ No data
 
 #### request
 
+```
 time: <str, format of '%Y-%m-%d %H:%M:%S'>
+```
 
 #### response
 
@@ -336,4 +346,22 @@ time: <str, format of '%Y-%m-%d %H:%M:%S'>
 	      'level3': <str>,
 	      'count': int
 }, ...]
+```
+
+### GET /mind_graph/article_list/
+
+#### request
+
+```
+label1: <str>
+label2: <str>
+label3: <str>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLE, ...]
+}
 ```

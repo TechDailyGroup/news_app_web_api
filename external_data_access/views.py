@@ -36,14 +36,14 @@ def get_latest_articles(request):
           "id": int,
           "title": <str>,
           "text": <str>
-          "publish_time": <YYYY-mm-dd>
+          "publish_time": <YYYY-mm-dd HH-MM-ss>
         },
         ...
       ]
     }
     """
 
-    if request.user.username != "nlp":
+    if request.user.username != "TechDailyGroup":
         return HttpResponse("Permission Denied")
 
     count = int(request.GET['count'])
