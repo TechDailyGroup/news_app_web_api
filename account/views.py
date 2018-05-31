@@ -1,4 +1,3 @@
-from django.shortcuts import render
 import json
 
 from django.views.decorators.http import require_GET, require_POST
