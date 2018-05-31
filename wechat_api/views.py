@@ -55,3 +55,9 @@ def wechat_login(request):
 
     login(request, user)
     return JsonResponse(get_json_dict(data={"sessionid": request.session.session_key}))
+
+def upload_picture(request):
+    print(request.FILES['picture'].read())
+    # print(request.body)
+    # print(request.POST)
+    return JsonResponse({})

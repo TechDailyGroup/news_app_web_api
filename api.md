@@ -308,6 +308,27 @@ count: <int>
 }
 ```
 
+### GET /external_data_access/not_indexed_articles/ (login required, username must be 'nlp')
+
+Notice: This is a API for search engine testing
+
+#### request
+
+engine: <str, "es"/"solr">
+
+#### response
+
+```json
+{
+	'articles': [{
+		    'id': <int>,
+		    'title': <str>,
+		    'text': <str>,
+		    'publish_time': <str, YYYY-mm-dd>
+	}, ...]
+}
+```
+
 ## Mind Graph
 
 ### POST /mind_graph/set_article_tags/ (login required, username must be 'nlp')
