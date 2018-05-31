@@ -57,7 +57,7 @@ def get_created_sections(request):
 
     json_dict['data']['sections'] = []
     
-    for section in account.created_sections:
+    for section in account.created_sections.all():
         json_dict['data']['sections'].append(get_section_dict(section))
 
     return JsonResponse(json_dict)

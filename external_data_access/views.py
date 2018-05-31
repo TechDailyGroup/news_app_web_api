@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
+from django.db.models import Q
 
 from main.models import Article
 from external_data_access.models import ArticleText
@@ -67,3 +68,58 @@ def get_latest_articles(request):
     json_dict = get_json_dict(data={"articles": articles_json_data})
 
     return JsonResponse(json_dict)
+
+@login_required
+@require_GET
+def get_not_indexed_articles(request):
+    """
+    request: {
+      'engine': <str, "es"/"solr">
+    }
+    response: {
+      'articles': [{
+        'id': <int>,
+        'title': <str>,
+        'text': <str>,
+        'publish_time': <str>
+      }]
+    }
+    """
+
+    if request.user.username != "TechDailyGroup":
+        return HttpResponse("Permission Denied")
+
+    engine =request.GET['engine']
+
+    if engine == "es":
+        not_indexed_articles = Article.objects.filter(Q(article_text=None) | Q(article_text__indexed_by_es=False))[0:10]
+    elif engine == "solr":
+        not_indexed_articles = Article.objects.filter(Q(article_text=None) | Q(article_text__indexed_by_solr=False))[0:10]
+    else:
+        return HttpResponse("The search engine name is not correct")
+
+    print(not_indexed_articles)
+
+    articles_json_data = []
+
+    for article in not_indexed_articles:
+        try:
+            tmp = article.article_text
+        except:
+            article_text = ArticleText(article=article, text=__get_article_text(article))
+            article_text.save()
+        article_dict = {
+            'id': article.id,
+            'title': article.title,
+            'text': article.article_text.text,
+            'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        if engine == "es":
+            article.article_text.indexed_by_es = False
+        elif engine == "solr":
+            article.article_text.indexed_by_solr = False
+        article.article_text.save()
+        
+        articles_json_data.append(article_dict)
+
+    return JsonResponse(get_json_dict(data=articles_json_data))
