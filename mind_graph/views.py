@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 from django.shortcuts import render
@@ -28,6 +29,7 @@ def set_article_tags(request):
     if request.user.username != "TechDailyGroup":
         return HttpResponse("Permission Denied")
 
+    print(request.body)
     received_data = json.loads(request.body.decode('utf-8'))
     article_id = int(received_data["id"])
     tags = received_data["tags"]

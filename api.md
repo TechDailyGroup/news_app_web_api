@@ -365,3 +365,23 @@ label3: <str>
 	'articles': [ARTICLE, ...]
 }
 ```
+
+## Wechat API
+
+### POST /wechat_api/login/
+
+#### request
+
+```
+{
+        'code': <str>
+}
+```
+
+#### response
+
+```
+{
+	'sessionid': <str>
+}
+```
