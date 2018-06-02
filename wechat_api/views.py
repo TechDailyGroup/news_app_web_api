@@ -24,6 +24,7 @@ def wechat_login(request):
     
     received_data = json.loads(request.body.decode('utf-8'))
     code = received_data['code']
+    nickname = received_data['nickname']
 
     official_login_api = official_login_api_template.format(
         appid=appid,
@@ -35,7 +36,6 @@ def wechat_login(request):
 
     response_dict = json.loads(response.text)
 
-    print(response_dict)
     openid = response_dict['openid']
     session_key = response_dict['session_key']
     # unionid = response_dict['unionid']
@@ -50,14 +50,9 @@ def wechat_login(request):
         user = User(username=username)
         user.set_password(password)
         user.save()
-        account = Account(user=user, gender="F", nickname="WeCharUser")
+        account = Account(user=user, gender="F", nickname=nickname)
         account.save()
 
     login(request, user)
     return JsonResponse(get_json_dict(data={"sessionid": request.session.session_key}))
 
-def upload_picture(request):
-    print(request.FILES['picture'].read())
-    # print(request.body)
-    # print(request.POST)
-    return JsonResponse({})
