@@ -115,9 +115,9 @@ def get_not_indexed_articles(request):
             'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S")
         }
         if engine == "es":
-            article.article_text.indexed_by_es = False
+            article.article_text.indexed_by_es = True
         elif engine == "solr":
-            article.article_text.indexed_by_solr = False
+            article.article_text.indexed_by_solr = True
         article.article_text.save()
         
         articles_json_data.append(article_dict)

@@ -63,6 +63,19 @@ def get_created_sections(request):
     return JsonResponse(json_dict)
 
 @require_GET
+def get_hot_sections(request):
+    json_dict = get_json_dict(data={})
+    hot_sections = Section.objects.filter()[0:10] # TODO - fake function
+
+    json_dict['data']['sections'] = []
+
+    for section in hot_sections:
+        json_dict['data']['sections'].append(get_section_dict(section))
+
+    return JsonResponse(json_dict)
+    
+
+@require_GET
 def get_article_list(request):
     """
     {
@@ -78,7 +91,7 @@ def get_article_list(request):
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
 
-    for article in Article.objects.filter(section__name=section)[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
+    for article in Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
         json_dict['data']['articles'].append(get_article_dict(article))
         
 

@@ -82,6 +82,36 @@ No data
 }
 ```
 
+### POST /account/change_detail/ (login required)
+
+#### request
+
+```json
+{
+	'nickname': <str>,
+	'gender': <str, 'M'/'F'>
+}
+```
+
+#### response
+
+No data
+
+### POST /account/change_password/ (login required)
+
+#### request
+
+```json
+{
+	'old_password': <str>,
+	'new_password': <str>
+}
+```
+
+#### response
+
+No data
+
 ## Main
 
 ### Macro Variables
@@ -157,6 +187,20 @@ No data
 ```json
 {
 	'sections': [SECTION, ...]
+}
+```
+
+### GET /api/section/hot/
+
+#### request
+
+No data
+
+#### response
+
+```json
+{
+	'sections:' [SECTION, ...]
 }
 ```
 
@@ -395,7 +439,8 @@ label3: <str>
 
 ```
 {
-        'code': <str>
+        'code': <str>,
+	'nickname': <str>
 }
 ```
 
