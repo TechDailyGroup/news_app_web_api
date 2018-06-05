@@ -78,7 +78,8 @@ No data
 {
 	'username': <str>,
 	'gender': <'M'/'F'>,
-	'nickname': <str>
+	'nickname': <str>,
+	'icon': <str, url of the icon>
 }
 ```
 
@@ -92,6 +93,16 @@ No data
 	'gender': <str, 'M'/'F'>
 }
 ```
+
+#### response
+
+No data
+
+### POST /account/change_icon/ (login required)
+
+#### request
+
+picture: <file, an image file>
 
 #### response
 
@@ -125,6 +136,7 @@ Here are some frequently used data structures int the json response.
 	'id': <int>,
 	'nickname': <str>,
 	'gender': <str, 'M'/'F'>,
+	'icon': <str, url of the picture>
 }
 ```
 
@@ -134,7 +146,8 @@ Here are some frequently used data structures int the json response.
 {
 	'name': <str>,
 	'creator': USER,
-	'description': <str>
+	'description': <str>,
+	'icon': <str, url of the picture>
 }
 ```
 
@@ -263,6 +276,33 @@ No data
 
 No data
 
+### POST /api/section/change/ (login required)
+
+#### request
+
+```json
+{
+	'old_section_name': <str>,
+	'new_section_name': <str>,
+	'description': <str>
+}
+```
+
+#### response
+
+No data
+
+### POST /api/section/change_icon/ (login required)
+
+#### request
+
+picture: <file, an image file>
+section: <str>
+
+#### response
+
+No data
+
 ### GET /api/article/list/
 
 #### request
@@ -304,6 +344,22 @@ id: <int>
 {
 	'title': <str>,
 	'section': <str>,
+	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+}
+```
+
+#### response
+
+No data
+
+### POST /api/article/change/ (login required)
+
+#### request
+
+```json
+{
+	'id': <int>,
+	'title': <str>,
 	'content': [ARTICLE_CONTENT_ELEMENT, ...]
 }
 ```

@@ -42,10 +42,12 @@ def get_section_dict(section):
     section_dict = {
         'name': section.name,
         'description': section.description,
+        'icon': section.icon.url,
         'creator': {
             'id': section.creator.id,
             'nickname': section.creator.nickname,
             'gender': section.creator.gender,
+            'icon': section.creator.icon.url,
         }
     }
 
