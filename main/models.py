@@ -3,10 +3,19 @@ from django.db import models
 from account.models import Account
 
 class Section(models.Model):
+
+    def section_icon_path(instance, filename):
+        # file will be uploaded to MEDIA_ROOT/section_<section_name>/icons/<filename>
+        return 'section_{0}/icons/{1}'.format(instance.section.name, filename)
+    
     creator = models.ForeignKey(Account, related_name="created_sections", on_delete=models.CASCADE)
     name = models.CharField(max_length=128, unique=True)
     description = models.CharField(max_length=512)
     subscribers = models.ManyToManyField(Account, related_name="subscribed_sections")
+    icon = models.ImageField(
+        upload_to = section_icon_path,
+        default = "default_pictures/section_default.png"
+    )
 
     def __str__(self):
         return self.name
