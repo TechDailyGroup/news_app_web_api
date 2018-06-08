@@ -25,6 +25,7 @@ def wechat_login(request):
     received_data = json.loads(request.body.decode('utf-8'))
     code = received_data['code']
     nickname = received_data['nickname']
+    gender = received_data['gender']
 
     official_login_api = official_login_api_template.format(
         appid=appid,
@@ -50,7 +51,7 @@ def wechat_login(request):
         user = User(username=username)
         user.set_password(password)
         user.save()
-        account = Account(user=user, gender="F", nickname=nickname)
+        account = Account(user=user, gender=gender, nickname=nickname)
         account.save()
 
     login(request, user)

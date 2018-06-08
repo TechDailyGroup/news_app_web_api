@@ -1,3 +1,4 @@
+import time
 import json
 from datetime import datetime
 
@@ -9,7 +10,7 @@ from django.views.decorators.http import require_GET, require_POST
 from account.models import *
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
-from utils.util_functions import get_article_dict, get_section_dict
+from utils.util_functions import get_article_dict, get_section_dict, get_md5
 
 def __update_article_images(article):
     content = json.loads(article.content)
@@ -25,22 +26,6 @@ def __update_article_images(article):
 
 @require_GET
 def get_subscribed_sections(request):
-    """
-    USER: {
-      id: <str>,
-      nickname: <str>,
-      gender: <str, 'M'/'F'>
-    }
-    SECTION: {
-      name: <str>,
-      creator: USER,
-      description: <str>
-    }
-    {
-      sections: [SECTION],
-    }
-    """
-
     json_dict = get_json_dict(data={})
     
     user = request.user
@@ -178,7 +163,7 @@ def change_section_icon(request):
     account = request.user.account
     try:
         section = account.created_sections.get(name=section_name)
-    except:
+    except Exception as e:
         return JsonResponse(get_permission_denied_json_dict())
         
     picture.name = "{timestamp}_{picture_name}".format(
