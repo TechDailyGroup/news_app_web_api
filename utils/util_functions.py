@@ -12,7 +12,7 @@ def get_article_dict(article):
       'title': <str>,
       'section': <str>,
       'publish_time': <Y-m-d>,
-      'images': [<str, image_url, ...>, ],
+      'images': [<str, image_url>, ...],
       'content': [
         {
           'type': <text/image>,
@@ -42,10 +42,12 @@ def get_section_dict(section):
     section_dict = {
         'name': section.name,
         'description': section.description,
+        'icon': section.icon.url,
         'creator': {
             'id': section.creator.id,
             'nickname': section.creator.nickname,
             'gender': section.creator.gender,
+            'icon': section.creator.icon.url,
         }
     }
 

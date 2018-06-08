@@ -1,4 +1,6 @@
+import time
 import json
+from datetime import datetime
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -7,28 +9,23 @@ from django.views.decorators.http import require_GET, require_POST
 
 from account.models import *
 from main.models import *
-from utils.api_utils import get_json_dict
-from utils.util_functions import get_article_dict, get_section_dict
+from utils.api_utils import get_json_dict, get_permission_denied_json_dict
+from utils.util_functions import get_article_dict, get_section_dict, get_md5
+
+def __update_article_images(article):
+    content = json.loads(article.content)
+    images = [x["data"] for x in content if x["type"] == "image"]
+    while len(images) < 3:
+        images.append(None)
+    article.image1_url = images[0]
+    article.image2_url = images[1]
+    article.image3_url = images[2]
+    
+    article.save()
 
 
 @require_GET
 def get_subscribed_sections(request):
-    """
-    USER: {
-      id: <str>,
-      nickname: <str>,
-      gender: <str, 'M'/'F'>
-    }
-    SECTION: {
-      name: <str>,
-      creator: USER,
-      description: <str>
-    }
-    {
-      sections: [SECTION],
-    }
-    """
-
     json_dict = get_json_dict(data={})
     
     user = request.user
@@ -56,10 +53,23 @@ def get_created_sections(request):
 
     json_dict['data']['sections'] = []
     
-    for section in account.created_sections:
+    for section in account.created_sections.all():
         json_dict['data']['sections'].append(get_section_dict(section))
 
     return JsonResponse(json_dict)
+
+@require_GET
+def get_hot_sections(request):
+    json_dict = get_json_dict(data={})
+    hot_sections = Section.objects.filter()[0:10] # TODO - fake function
+
+    json_dict['data']['sections'] = []
+
+    for section in hot_sections:
+        json_dict['data']['sections'].append(get_section_dict(section))
+
+    return JsonResponse(json_dict)
+    
 
 @require_GET
 def get_article_list(request):
@@ -77,7 +87,7 @@ def get_article_list(request):
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
 
-    for article in Article.objects.filter(section__name=section)[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
+    for article in Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
         json_dict['data']['articles'].append(get_article_dict(article))
         
 
@@ -92,6 +102,24 @@ def get_article_content(request):
     json_dict['data']['article'] = get_article_dict(article)
     
     return JsonResponse(json_dict)
+
+@require_POST
+def change_article(request):
+    received_data = json.loads(request.body.decode('utf-8'))
+    article_id = received_data['id']
+    article_title = received_data['title']
+    article_content = received_data['content']
+
+    article = Article.objects.get(id=article_id)
+    if article.section.creator != request.user.account:
+        return JsonResponse(get_permission_denied_response())
+
+    article.title = title
+    article.content = json.dumps(article_content)
+    article.save()
+    __update_article_images(article)
+
+    return JsonResponse(get_json_dict(data={}))
 
 @login_required
 @require_POST
@@ -109,28 +137,79 @@ def create_new_section(request):
 
 @login_required
 @require_POST
+def change_section_detail(request):
+    received_data = json.loads(request.body.decode('utf-8'))
+    old_section_name = received_data['old_section_name']
+    description = received_data['description']
+    new_section_name = received_data['new_section_name']
+    account = request.user.account
+    try:
+        section = account.created_sections.get(name=old_section_name)
+    except:
+        return JsonResponse(get_permission_denied_json_dict())
+
+    section.name = new_section_name
+    section.description = description
+    section.save()
+
+    return JsonResponse(get_json_dict(data={}))
+
+@login_required
+@require_POST
+def change_section_icon(request):
+    picture = request.FILES['picture']
+    section_name = request.POST['section']
+
+    account = request.user.account
+    try:
+        section = account.created_sections.get(name=section_name)
+    except Exception as e:
+        return JsonResponse(get_permission_denied_json_dict())
+        
+    picture.name = "{timestamp}_{picture_name}".format(
+        timestamp = int(round(time.time() * 1000)),
+        picture_name = get_md5(picture.read())
+    )
+
+    section.icon = picture
+    section.save()
+
+    return JsonResponse(get_json_dict(data={}))
+    
+
+@login_required
+@require_POST
 def publish_article(request):
     received_data = json.loads(request.body.decode('utf-8'))
     title = received_data['title']
     section = received_data['section']
     content = received_data['content']
 
+    # TODO - remove code block
+    try:
+        publish_time_str = received_data['publish_time']
+        publish_time = datetime.strptime(publish_time_str, "%Y-%m-%d %H:%M:%S")
+    except:
+        publish_time = None
+    # END TODO
+
     section = Section.objects.get(name=section)
     account = request.user.account
 
     if (section.creator != account):
-        return JsonResponse(get_json_dict(err_code=-1, message="No Permission", data={}))
+        return JsonResponse(get_permission_denied_json_dict())
     
     new_article = Article(section=section, title=title, content=json.dumps(content), )
-    images = [x["data"] for x in content if x["type"] == "image"]
-    while len(images) < 3:
-        images.append(None)
-    new_article.image1_url = images[0]
-    new_article.image2_url = images[1]
-    new_article.image3_url = images[2]
-    
     new_article.save()
 
+    __update_article_images(new_article)    
+    
+    # TODO - remove code block
+    if publish_time != None:
+        new_article.publish_time = publish_time
+        new_article.save()
+    # END TODO
+    
     return JsonResponse(get_json_dict(data={}))
 
 @require_GET

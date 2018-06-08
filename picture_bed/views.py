@@ -29,8 +29,6 @@ def upload_picture(request):
         timestamp = int(round(time.time() * 1000)),
         picture_name = get_md5(picture.read())
     )
-    print(dir(picture))
-    print(picture.name)
 
     picture_obj = Picture(picture=picture, user=request.user)
     picture_obj.save()
