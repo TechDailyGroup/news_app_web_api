@@ -6,7 +6,7 @@ class Section(models.Model):
 
     def section_icon_path(instance, filename):
         # file will be uploaded to MEDIA_ROOT/section_<section_name>/icons/<filename>
-        return 'section_{0}/icons/{1}'.format(instance.section.name, filename)
+        return 'section_{0}/icons/{1}'.format(instance.name, filename)
     
     creator = models.ForeignKey(Account, related_name="created_sections", on_delete=models.CASCADE)
     name = models.CharField(max_length=128, unique=True)
