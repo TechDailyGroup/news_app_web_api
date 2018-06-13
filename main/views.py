@@ -10,7 +10,7 @@ from django.views.decorators.http import require_GET, require_POST
 from account.models import *
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
-from utils.util_functions import get_article_dict, get_section_dict, get_md5
+from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict
 
 def __update_article_images(article):
     content = json.loads(article.content)
@@ -211,6 +211,38 @@ def publish_article(request):
     # END TODO
     
     return JsonResponse(get_json_dict(data={}))
+
+@login_required
+@require_POST
+def make_comment(request):    
+    received_data = json.loads(request.body.decode('utf-8'))
+    article_id = received_data['article_id']
+    content = received_data['content']
+    account = request.user.account
+    article = Article.objects.get(id=article_id)
+    comment = Comment(article=article, creator=account, content=comment)
+    comment.save()
+
+    return JsonResponse(get_json_dict(data={}))
+
+@require_GET
+def get_comments(request):
+    
+    article_id = int(request.GET['article_id'])
+    page = int(request.GET['page'])
+    
+    ONE_PAGE_SIZE = 20
+    st_index = page * ONE_PAGE_SIZE
+    en_index = (page+1) * ONE_PAGE_SIZE
+    
+    comments = Comment.objects.filter(article__id=article_id).order_by('-create_time')[st_index, en_index]
+
+    json_dict = get_json_dict(data={"comments": []})
+
+    for comment in comments:
+        json_dict['data']['comments'].append(get_comment_dict(comment))
+
+    return JsonResponse(json_dict)
 
 @require_GET
 def search_for_sections(request):

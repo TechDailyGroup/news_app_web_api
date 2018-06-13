@@ -38,20 +38,32 @@ def get_article_dict(article):
 
     return ret
 
+def get_user_dict(account):
+    user_dict = {        
+        'id': account.id,
+        'nickname': account.nickname,
+        'gender': account.gender,
+        'icon': account.icon.url,
+    }
+
 def get_section_dict(section):
     section_dict = {
         'name': section.name,
         'description': section.description,
         'icon': section.icon.url,
-        'creator': {
-            'id': section.creator.id,
-            'nickname': section.creator.nickname,
-            'gender': section.creator.gender,
-            'icon': section.creator.icon.url,
-        }
+        'creator': get_user_dict(section.creator),
     }
 
     return section_dict
+
+def get_comment_dict(comment):
+    comment_dict = {
+        'user': get_user_dict(comment.creator),
+        'time': comment.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'content': comment.content,
+    }
+
+    return comment_dict
 
 def get_md5(bytes):
     hash = hashlib.md5()
