@@ -167,9 +167,19 @@ Here are some frequently used data structures int the json response.
 	'id': <int>,
 	'title': <str>,
 	'section': <str>,
-	'publish_time': <str, Yyyy-mm-dd>,
+	'publish_time': <str, yyyy-mm-dd>,
 	'images': [<str, image url>, ...],
 	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+}
+```
+
+#### COMMENT
+
+```json
+{
+	'user': USER,
+	'time': <str, YYYY-mm-dd>,
+	'content': <str>
 }
 ```
 
@@ -351,6 +361,36 @@ id: <int>
 #### response
 
 No data
+
+### POST /api/article/comment/new (login required)
+
+#### request
+
+```
+{
+	'article_id': <int>,
+	'content': <str>
+}
+```
+
+#### response
+
+No data
+
+### GET /api/article/comment/
+
+#### request
+
+article_id: <int>
+page: <int>
+
+#### response
+
+```json
+{
+	'comments': [COMMENT, ...]
+}
+```
 
 ### POST /api/article/change/ (login required)
 

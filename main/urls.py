@@ -15,4 +15,6 @@ urlpatterns = [
     path('article/content/', views.get_article_content),
     path('article/new/', views.publish_article),
     path('article/change/', views.change_article),
+    path('article/comment/', views.get_comments),
+    path('article/comment/new/', views.make_comment),
 ]
