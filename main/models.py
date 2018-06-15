@@ -34,6 +34,7 @@ class Article(models.Model):
     #   ...
     # ]
     content = models.TextField()
+    # likers = models.ManyToManyField(Account)
 
     def __str__(self):
         return "{section} {title}".format(section=self.section.name, title=self.title)
@@ -43,4 +44,4 @@ class Comment(models.Model):
     creator = models.ForeignKey(Account, on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True, db_index=True)
     content = models.CharField(max_length=512)
-    
+

@@ -81,17 +81,52 @@ def get_article_list(request):
 
     ONE_PAGE_SIZE = 10
 
-    section = request.GET['section']
+    section = request.GET.get('section', "")
     page = int(request.GET.get('page', 0))
 
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
 
-    for article in Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
+    if section == "":
+        articles = Article.objects.all().order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]
+    else:
+        articles = Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]
+
+    for article in articles:
         json_dict['data']['articles'].append(get_article_dict(article))
         
 
     return JsonResponse(json_dict)
+
+"""
+@require_POST
+@login_required
+def like_the_article(request):
+    """
+    request: {
+      "article_id": <int>
+    }
+    """
+    received_data = json.loads(request.body.decode('utf-8'))
+    article_id = received_data['article_id']
+
+    account = request.user.account
+    article = Article.objects.get(id=article_id)
+
+    try:
+        article.likers.remove(account)
+    except:        
+        article.likers.add(account)
+    article.save()
+
+    return JsonResponse(get_json_dict(data={}))
+"""
+    
+@require_GET
+def get_recommended_article_list(request):
+    # TODO - implement this function, now its fake
+
+    return get_article_list(request)
 
 @require_GET
 def get_article_content(request):
