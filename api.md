@@ -330,6 +330,22 @@ page: <int>
 }
 ```
 
+### GET /api/article/recommended/
+
+#### request
+
+```
+page: <int>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLES, ...]
+}
+```
+
 ### GET /api/article/content/
 
 #### request

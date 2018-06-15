@@ -12,6 +12,7 @@ urlpatterns = [
     path('section/change/', views.change_section_detail),
     path('section/change_icon/', views.change_section_icon),
     path('article/list/', views.get_article_list),
+    path('article/recommended/', views.get_recommended_article_list),
     path('article/content/', views.get_article_content),
     path('article/new/', views.publish_article),
     path('article/change/', views.change_article),
