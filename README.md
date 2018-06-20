@@ -4,6 +4,11 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.1 (2018-06-20)
+
+* Add comment APIs
+* Add 'like the article' APIs
+
 ## Release 1.1 (2018-06-08)
 
 * Add WeChat login API
