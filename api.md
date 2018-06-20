@@ -167,9 +167,20 @@ Here are some frequently used data structures int the json response.
 	'id': <int>,
 	'title': <str>,
 	'section': <str>,
-	'publish_time': <str, Yyyy-mm-dd>,
+	'publish_time': <str, yyyy-mm-dd>,
 	'images': [<str, image url>, ...],
-	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+	'content': [ARTICLE_CONTENT_ELEMENT, ...],
+	'liker_count': <int>,
+}
+```
+
+#### COMMENT
+
+```json
+{
+	'user': USER,
+	'time': <str, YYYY-mm-dd>,
+	'content': <str>
 }
 ```
 
@@ -320,6 +331,22 @@ page: <int>
 }
 ```
 
+### GET /api/article/recommended/
+
+#### request
+
+```
+page: <int>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLES, ...]
+}
+```
+
 ### GET /api/article/content/
 
 #### request
@@ -333,6 +360,36 @@ id: <int>
 ```json
 {
 	'article': ARTICLE
+}
+```
+
+### POST /api/article/like/
+
+#### request
+
+```
+{
+	'id': <int>
+}
+```
+
+#### response
+
+No data
+
+### GET /api/article/like_or_not/
+
+#### request
+
+```
+id: <int>
+```
+
+#### response
+
+```json
+{
+	'like': <boolean, true/false>
 }
 ```
 
@@ -351,6 +408,36 @@ id: <int>
 #### response
 
 No data
+
+### POST /api/article/comment/new (login required)
+
+#### request
+
+```
+{
+	'article_id': <int>,
+	'content': <str>
+}
+```
+
+#### response
+
+No data
+
+### GET /api/article/comment/
+
+#### request
+
+article_id: <int>
+page: <int>
+
+#### response
+
+```json
+{
+	'comments': [COMMENT, ...]
+}
+```
 
 ### POST /api/article/change/ (login required)
 

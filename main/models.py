@@ -34,15 +34,14 @@ class Article(models.Model):
     #   ...
     # ]
     content = models.TextField()
+    likers = models.ManyToManyField(Account, related_name='liked_articles')
 
     def __str__(self):
         return "{section} {title}".format(section=self.section.name, title=self.title)
 
-""" TODO
-class Actions(models.Model):
-    ACTION_TYPES = (('visit_page', 'visit_page'), )
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    creator = models.ForeignKey(Account, on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True, db_index=True)
+    content = models.CharField(max_length=512)
 
-    user = models.ForeignKey(Account)
-    type = models.CharField(max_length='32', choices=ACTION_TYPES)
-    value = models.CharField(max_length = '256')
-"""

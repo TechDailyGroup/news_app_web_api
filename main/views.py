@@ -10,7 +10,7 @@ from django.views.decorators.http import require_GET, require_POST
 from account.models import *
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
-from utils.util_functions import get_article_dict, get_section_dict, get_md5
+from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict
 
 def __update_article_images(article):
     content = json.loads(article.content)
@@ -81,17 +81,71 @@ def get_article_list(request):
 
     ONE_PAGE_SIZE = 10
 
-    section = request.GET['section']
+    section = request.GET.get('section', "")
     page = int(request.GET.get('page', 0))
 
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
 
-    for article in Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]:
+    if section == "":
+        articles = Article.objects.all().order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]
+    else:
+        articles = Article.objects.filter(section__name=section).order_by('-publish_time')[ONE_PAGE_SIZE*page: ONE_PAGE_SIZE*(page+1)]
+
+    for article in articles:
         json_dict['data']['articles'].append(get_article_dict(article))
         
 
     return JsonResponse(json_dict)
+
+@require_POST
+@login_required
+def like_the_article(request):
+    """
+    request: {
+      "article_id": <int>
+    }
+    """
+    received_data = json.loads(request.body.decode('utf-8'))
+    article_id = received_data['id']
+
+    account = request.user.account
+    article = Article.objects.get(id=article_id)
+
+    try:
+        article.likers.get(user__username=account.user.username)
+        article.likers.remove(account)
+        message = "Undo like success"
+    except:
+        article.likers.add(account)
+        message = "Like success"
+    article.save()
+
+    return JsonResponse(get_json_dict(data={}, message=message))
+
+@require_GET
+def user_like_article_or_not(request):
+    article_id = request.GET['id']
+    user = request.user
+
+    like = False
+
+    if user.is_authenticated:
+        account = user.account
+        try:
+            article = account.liked_articles.get(id=article_id)
+            like = True
+        except:
+            pass
+
+    return JsonResponse(get_json_dict(data={'like': like}))
+
+    
+@require_GET
+def get_recommended_article_list(request):
+    # TODO - implement this function, now its fake
+
+    return get_article_list(request)
 
 @require_GET
 def get_article_content(request):
@@ -211,6 +265,38 @@ def publish_article(request):
     # END TODO
     
     return JsonResponse(get_json_dict(data={}))
+
+@login_required
+@require_POST
+def make_comment(request):    
+    received_data = json.loads(request.body.decode('utf-8'))
+    article_id = received_data['article_id']
+    content = received_data['content']
+    account = request.user.account
+    article = Article.objects.get(id=article_id)
+    comment = Comment(article=article, creator=account, content=comment)
+    comment.save()
+
+    return JsonResponse(get_json_dict(data={}))
+
+@require_GET
+def get_comments(request):
+    
+    article_id = int(request.GET['article_id'])
+    page = int(request.GET['page'])
+    
+    ONE_PAGE_SIZE = 20
+    st_index = page * ONE_PAGE_SIZE
+    en_index = (page+1) * ONE_PAGE_SIZE
+    
+    comments = Comment.objects.filter(article__id=article_id).order_by('-create_time')[st_index, en_index]
+
+    json_dict = get_json_dict(data={"comments": []})
+
+    for comment in comments:
+        json_dict['data']['comments'].append(get_comment_dict(comment))
+
+    return JsonResponse(json_dict)
 
 @require_GET
 def search_for_sections(request):
