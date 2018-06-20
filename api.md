@@ -169,7 +169,8 @@ Here are some frequently used data structures int the json response.
 	'section': <str>,
 	'publish_time': <str, yyyy-mm-dd>,
 	'images': [<str, image url>, ...],
-	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+	'content': [ARTICLE_CONTENT_ELEMENT, ...],
+	'liker_count': <int>,
 }
 ```
 
@@ -359,6 +360,36 @@ id: <int>
 ```json
 {
 	'article': ARTICLE
+}
+```
+
+### POST /api/article/like/
+
+#### request
+
+```
+{
+	'id': <int>
+}
+```
+
+#### response
+
+No data
+
+### GET /api/article/like_or_not/
+
+#### request
+
+```
+id: <int>
+```
+
+#### response
+
+```json
+{
+	'like': <boolean, true/false>
 }
 ```
 
