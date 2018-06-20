@@ -3,7 +3,7 @@ import hashlib
 
 from main.models import Section, Article
 
-def get_article_dict(article):    
+def get_article_dict(article):
     """
     article is an instance of Article
     ret: 
@@ -28,6 +28,7 @@ def get_article_dict(article):
         'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S"),
         'images': [article.image1_url, article.image2_url, article.image3_url],
         'content': json.loads(article.content),
+        'liker_count': article.likers.count(),
     }
 
     while True:

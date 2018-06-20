@@ -18,4 +18,6 @@ urlpatterns = [
     path('article/change/', views.change_article),
     path('article/comment/', views.get_comments),
     path('article/comment/new/', views.make_comment),
+    path('article/like/', views.like_the_article),
+    path('article/like_or_not/', views.user_like_article_or_not),
 ]

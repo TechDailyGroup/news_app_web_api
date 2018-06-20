@@ -34,7 +34,7 @@ class Article(models.Model):
     #   ...
     # ]
     content = models.TextField()
-    # likers = models.ManyToManyField(Account)
+    likers = models.ManyToManyField(Account, related_name='liked_articles')
 
     def __str__(self):
         return "{section} {title}".format(section=self.section.name, title=self.title)

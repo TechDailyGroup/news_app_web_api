@@ -98,7 +98,6 @@ def get_article_list(request):
 
     return JsonResponse(json_dict)
 
-"""
 @require_POST
 @login_required
 def like_the_article(request):
@@ -108,19 +107,39 @@ def like_the_article(request):
     }
     """
     received_data = json.loads(request.body.decode('utf-8'))
-    article_id = received_data['article_id']
+    article_id = received_data['id']
 
     account = request.user.account
     article = Article.objects.get(id=article_id)
 
     try:
+        article.likers.get(user__username=account.user.username)
         article.likers.remove(account)
-    except:        
+        message = "Undo like success"
+    except:
         article.likers.add(account)
+        message = "Like success"
     article.save()
 
-    return JsonResponse(get_json_dict(data={}))
-"""
+    return JsonResponse(get_json_dict(data={}, message=message))
+
+@require_GET
+def user_like_article_or_not(request):
+    article_id = request.GET['id']
+    user = request.user
+
+    like = False
+
+    if user.is_authenticated:
+        account = user.account
+        try:
+            article = account.liked_articles.get(id=article_id)
+            like = True
+        except:
+            pass
+
+    return JsonResponse(get_json_dict(data={'like': like}))
+
     
 @require_GET
 def get_recommended_article_list(request):
