@@ -68,6 +68,9 @@ def get_mind_graph(request):
         count: int
       }, ...]
     """
+
+    return JsonResponse(get_json_response(data={}))
+    
     try:
         time = datetime.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:

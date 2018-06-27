@@ -166,7 +166,7 @@ Here are some frequently used data structures int the json response.
 {
 	'id': <int>,
 	'title': <str>,
-	'section': <str>,
+	'section': SECTION,
 	'publish_time': <str, yyyy-mm-dd>,
 	'images': [<str, image url>, ...],
 	'content': [ARTICLE_CONTENT_ELEMENT, ...],
@@ -242,6 +242,20 @@ No data
 #### response
 
 No data
+
+### GET /api/section/detail/
+
+#### request
+
+section: <str>
+
+#### response
+
+```json
+{
+	'section': SECTION
+}
+```
 
 ### GET /api/section/search/
 

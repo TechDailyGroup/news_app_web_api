@@ -10,7 +10,7 @@ def get_article_dict(article):
     ARTICLE: {
       'id': <int>,
       'title': <str>,
-      'section': <str>,
+      'section': SECTION,
       'publish_time': <Y-m-d>,
       'images': [<str, image_url>, ...],
       'content': [
@@ -21,10 +21,11 @@ def get_article_dict(article):
       ]
     }
     """
+    section = Section.objects.get(name=article.section.name)
     ret = {
         'id': article.id,
         'title': article.title,
-        'section': article.section.name,
+        'section': get_section_dict(section),
         'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S"),
         'images': [article.image1_url, article.image2_url, article.image3_url],
         'content': json.loads(article.content),
