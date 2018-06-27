@@ -47,6 +47,7 @@ def get_user_dict(account):
         'gender': account.gender,
         'icon': account.icon.url,
     }
+    return user_dict
 
 def get_section_dict(section):
     section_dict = {
