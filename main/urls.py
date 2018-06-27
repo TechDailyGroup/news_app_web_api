@@ -6,6 +6,7 @@ urlpatterns = [
     path('section/created/', views.get_created_sections),
     path('section/hot/', views.get_hot_sections),
     path('section/new/', views.create_new_section),
+    path('section/detail/', views.get_section_detail),
     path('section/search/', views.search_for_sections),
     path('section/subscribe/', views.subscribe_section),
     path('section/unsubscribe/', views.unsubscribe_section),
