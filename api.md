@@ -345,6 +345,23 @@ page: <int>
 }
 ```
 
+### GET /api/article/search/
+
+#### request
+
+```
+keyword: <str>
+page: <int>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLE, ...]
+}
+```
+
 ### GET /api/article/recommended/
 
 #### request
@@ -357,7 +374,7 @@ page: <int>
 
 ```json
 {
-	'articles': [ARTICLES, ...]
+	'articles': [ARTICLE, ...]
 }
 ```
 
