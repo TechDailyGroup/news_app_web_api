@@ -98,6 +98,14 @@ def get_article_list(request):
 
     return JsonResponse(json_dict)
 
+@require_GET
+def search_for_article(request):
+
+    # TODO - fake function
+    
+    return get_article_list(request)
+    
+
 @require_POST
 @login_required
 def like_the_article(request):
