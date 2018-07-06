@@ -49,7 +49,7 @@ def get_latest_articles(request):
 
     count = int(request.GET['count'])
     count = min(count, 1000)
-    articles = Article.objects.filter().order_by('publish_time')[0:count]
+    articles = Article.objects.filter().order_by('-publish_time')[0:count]
 
     articles_json_data = []
 

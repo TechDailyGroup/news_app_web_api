@@ -98,6 +98,14 @@ def get_article_list(request):
 
     return JsonResponse(json_dict)
 
+@require_GET
+def search_for_article(request):
+
+    # TODO - fake function
+    
+    return get_article_list(request)
+    
+
 @require_POST
 @login_required
 def like_the_article(request):
@@ -189,6 +197,12 @@ def create_new_section(request):
 
     return JsonResponse(get_json_dict(data={}))
 
+@require_GET
+def get_section_detail(request):
+    section_name = request.GET["section"]
+    section = Section.objects.get(name=section_name)
+    return JsonResponse(get_json_dict(data={'section': get_section_dict(section)}))
+
 @login_required
 @require_POST
 def change_section_detail(request):
@@ -268,13 +282,13 @@ def publish_article(request):
 
 @login_required
 @require_POST
-def make_comment(request):    
+def make_comment(request):
     received_data = json.loads(request.body.decode('utf-8'))
     article_id = received_data['article_id']
     content = received_data['content']
     account = request.user.account
     article = Article.objects.get(id=article_id)
-    comment = Comment(article=article, creator=account, content=comment)
+    comment = Comment(article=article, creator=account, content=content)
     comment.save()
 
     return JsonResponse(get_json_dict(data={}))
@@ -289,7 +303,7 @@ def get_comments(request):
     st_index = page * ONE_PAGE_SIZE
     en_index = (page+1) * ONE_PAGE_SIZE
     
-    comments = Comment.objects.filter(article__id=article_id).order_by('-create_time')[st_index, en_index]
+    comments = Comment.objects.filter(article__id=article_id).order_by('-create_time')[st_index:en_index]
 
     json_dict = get_json_dict(data={"comments": []})
 
