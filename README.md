@@ -4,6 +4,13 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.2 (2018-07-06)
+
+* Update requirements.txt
+* Add API to get section detail
+* Add section detail to ARTICLE
+* bug fixes
+
 ## Release 1.1.1 (2018-06-20)
 
 * Add comment APIs
