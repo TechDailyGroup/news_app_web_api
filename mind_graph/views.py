@@ -68,15 +68,13 @@ def get_mind_graph(request):
         count: int
       }, ...]
     """
-
-    return JsonResponse(get_json_dict(data={}))
     
     try:
         time = datetime.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:
         time = datetime.now()
 
-    one_day_interval = timedelta(days=1000)
+    one_day_interval = timedelta(days=1)
         
     articles = Article.objects.filter(publish_time__lt=time, publish_time__gt=time-one_day_interval)
 
