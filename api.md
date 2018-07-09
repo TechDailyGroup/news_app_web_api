@@ -595,6 +595,7 @@ time: <str, format of '%Y-%m-%d %H:%M:%S'>
 label1: <str>
 label2: <str>
 label3: <str>
+time: <str, format of '%Y-%m-%d %H:%M:%S'>
 ```
 
 #### response
