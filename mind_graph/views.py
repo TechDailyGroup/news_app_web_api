@@ -112,7 +112,14 @@ def get_mind_graph_article_list(request):
     l2_tag = request.GET['label2']
     l3_tag = request.GET['label3']
 
-    articles = Article.objects.filter(article_tags__level1_tag=l1_tag, article_tags__level2_tag=l2_tag, article_tags__level3_tag=l3_tag)
+    try:
+        time = datetime.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
+    except:
+        time = datetime.now()
+
+    one_day_interval = timedelta(days=1)
+
+    articles = Article.objects.filter(article_tags__level1_tag=l1_tag, article_tags__level2_tag=l2_tag, article_tags__level3_tag=l3_tag, publish_time__lt=time, publish_time__gt=time-one_day_interval)
 
     json_dict_data = []
     
