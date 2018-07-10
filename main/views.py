@@ -1,7 +1,7 @@
 import time
 import json
-from datetime import datetime
 
+from django.utils import timezone
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -242,7 +242,7 @@ def change_section_icon(request):
     section.icon = picture
     section.save()
 
-    return JsonResponse(get_json_dict(data={}))
+    return JsonResponse(get_json_dict(data={'icon': section.icon.url}))
     
 
 @login_required
@@ -256,7 +256,7 @@ def publish_article(request):
     # TODO - remove code block
     try:
         publish_time_str = received_data['publish_time']
-        publish_time = datetime.strptime(publish_time_str, "%Y-%m-%d %H:%M:%S")
+        publish_time = timezone.strptime(publish_time_str, "%Y-%m-%d %H:%M:%S")
     except:
         publish_time = None
     # END TODO

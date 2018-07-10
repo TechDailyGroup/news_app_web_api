@@ -1,6 +1,7 @@
 import json
-from datetime import datetime, timedelta
+from datetime import timedelta
 
+from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
@@ -70,9 +71,9 @@ def get_mind_graph(request):
     """
     
     try:
-        time = datetime.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
+        time = timezone.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:
-        time = datetime.now()
+        time = timezone.now()
 
     one_day_interval = timedelta(days=1)
         
@@ -113,9 +114,9 @@ def get_mind_graph_article_list(request):
     l3_tag = request.GET['label3']
 
     try:
-        time = datetime.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
+        time = timezone.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:
-        time = datetime.now()
+        time = timezone.now()
 
     one_day_interval = timedelta(days=1)
 

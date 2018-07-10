@@ -1,6 +1,7 @@
 import json
 import hashlib
 
+from django.utils import timezone
 from main.models import Section, Article
 
 def get_article_dict(article):
@@ -26,7 +27,7 @@ def get_article_dict(article):
         'id': article.id,
         'title': article.title,
         'section': get_section_dict(section),
-        'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'publish_time': timezone.localtime(article.publish_time).strftime("%Y-%m-%d %H:%M:%S"),
         'images': [article.image1_url, article.image2_url, article.image3_url],
         'content': json.loads(article.content),
         'liker_count': article.likers.count(),
@@ -62,7 +63,7 @@ def get_section_dict(section):
 def get_comment_dict(comment):
     comment_dict = {
         'user': get_user_dict(comment.creator),
-        'time': comment.create_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'time': timezone.localtime(comment.create_time).strftime("%Y-%m-%d %H:%M:%S"),
         'content': comment.content,
     }
 

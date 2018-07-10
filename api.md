@@ -106,7 +106,11 @@ picture: <file, an image file>
 
 #### response
 
-No data
+```json
+{
+	'icon': <str, new icon url>
+}
+```
 
 ### POST /account/change_password/ (login required)
 
@@ -326,7 +330,11 @@ section: <str>
 
 #### response
 
-No data
+```json
+{
+	'icon': <str, new icon url>
+}
+```
 
 ### GET /api/article/list/
 
