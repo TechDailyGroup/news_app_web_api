@@ -145,5 +145,5 @@ def change_icon(request):
     account.icon = picture
     account.save()
 
-    return JsonResponse(get_json_dict(data={}))
+    return JsonResponse(get_json_dict(data={'icon': account.icon.url}))
     
