@@ -4,6 +4,11 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.3 (2018-07-16)
+
+* Fix timezone issue
+* bug fixes
+
 ## Release 1.1.2 (2018-07-06)
 
 * Update requirements.txt
