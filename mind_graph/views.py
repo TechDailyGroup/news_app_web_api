@@ -71,13 +71,13 @@ def get_mind_graph(request):
     """
     
     try:
-        time = timezone.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
+        time = timezone.datetime.strptime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:
         time = timezone.now()
 
-    one_day_interval = timedelta(days=1)
+    days_interval = timedelta(days=3)
         
-    articles = Article.objects.filter(publish_time__lt=time, publish_time__gt=time-one_day_interval)
+    articles = Article.objects.filter(publish_time__lt=time, publish_time__gt=time-days_interval)
 
     mind_graph = []
     mind_graph_dict = {}
@@ -114,13 +114,13 @@ def get_mind_graph_article_list(request):
     l3_tag = request.GET['label3']
 
     try:
-        time = timezone.strftime(request.GET[time], "%Y-%m-%d %H:%M:%S")
+        time = timezone.datetime.strptime(request.GET[time], "%Y-%m-%d %H:%M:%S")
     except:
         time = timezone.now()
 
-    one_day_interval = timedelta(days=1)
+    days_interval = timedelta(days=3)
 
-    articles = Article.objects.filter(article_tags__level1_tag=l1_tag, article_tags__level2_tag=l2_tag, article_tags__level3_tag=l3_tag, publish_time__lt=time, publish_time__gt=time-one_day_interval)
+    articles = Article.objects.filter(article_tags__level1_tag=l1_tag, article_tags__level2_tag=l2_tag, article_tags__level3_tag=l3_tag, publish_time__lt=time, publish_time__gt=time-days_interval).order_by('-publish_time')
 
     json_dict_data = []
     
