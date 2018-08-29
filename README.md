@@ -4,6 +4,10 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.4 (2018-08-28)
+
+* Add search function
+
 ## Release 1.1.3 (2018-07-16)
 
 * Fix timezone issue
