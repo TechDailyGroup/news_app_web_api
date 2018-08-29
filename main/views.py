@@ -11,6 +11,7 @@ from account.models import *
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
 from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict
+from utils.search_utils import FuncInterface as SearchEngine
 
 def __update_article_images(article):
     content = json.loads(article.content)
@@ -101,9 +102,26 @@ def get_article_list(request):
 @require_GET
 def search_for_article(request):
 
-    # TODO - fake function
+    keyword = request.GET['keyword']
+    try:
+        page = int(request.GET['page'])
+    except:
+        page = 0
+
+    search_engine = SearchEngine("10.144.5.124", "8983")
+    article_ids = search_engine.query(keyword, page)
+
+    json_dict = get_json_dict(data={})
+    json_dict['data']['articles'] = []
+
+    for article_id in article_ids:
+        try:
+            article = Article.objects.get(id=article_id)
+            json_dict['data']['articles'].append(get_article_dict(article))
+        except:
+            pass
     
-    return get_article_list(request)
+    return JsonResponse(json_dict)
     
 
 @require_POST
@@ -151,8 +169,23 @@ def user_like_article_or_not(request):
     
 @require_GET
 def get_recommended_article_list(request):
-    # TODO - implement this function, now its fake
+    """
+    article_id = request.GET["id"]
+    search_engine = SearchEngine("10.144.5.124", "8983")
+    suggested_article_ids =  search_engine.morelikethis(article_id)
 
+    json_dict = get_json_dict(data={'articles': []})
+
+    print(suggested_article_ids)
+
+    for suggested_article_id in suggested_article_ids:
+        try:
+            article = Article.objects.get(id=suggested_article_id)
+            json_dict['data']['articles'].append(get_article_dict(article))
+        except:
+            pass
+    return JsonResponse(json_dict)
+    """
     return get_article_list(request)
 
 @require_GET
