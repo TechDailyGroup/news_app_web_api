@@ -18,6 +18,14 @@ class Account(models.Model):
         upload_to=user_icon_path,
         default="default_pictures/male-default.png"
     )
+    score = models.IntegerField(default=0, db_index=True)
 
     def __str__(self):
         return self.user.username
+
+class Action(models.Model):
+
+    account = models.ForeignKey(Account, related_name="actions", on_delete=models.CASCADE)
+    type = models.CharField(max_length=32)
+    value = models.CharField(max_length=128)
+    time = models.DateTimeField(auto_now_add=True, db_index=True)

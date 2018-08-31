@@ -12,6 +12,16 @@ All responses use the format below:
 
 The response sections below only show you the `data` part of the reply. But remember, the complete response format is like above.
 
+If there is 'login required' following the request url, and if you are not logined, then the following response will be returned (with HTTP status code `403`):
+
+```json
+{
+	'err_code': -1,
+	'message': 'Login Required',
+	'data': {}
+}
+```
+
 ## Account
 
 This part includes functions related to user account, like register, login and logout.
@@ -131,7 +141,7 @@ No data
 
 ### Macro Variables
 
-Here are some frequently used data structures int the json response.
+Here are some frequently used data structures in the json response.
 
 #### USER
 
@@ -140,7 +150,8 @@ Here are some frequently used data structures int the json response.
 	'id': <int>,
 	'nickname': <str>,
 	'gender': <str, 'M'/'F'>,
-	'icon': <str, url of the picture>
+	'icon': <str, url of the picture>,
+	'score': <int>
 }
 ```
 
@@ -386,6 +397,22 @@ page: <int>
 }
 ```
 
+### GET /api/article/similar_articles/
+
+#### request
+
+```
+id: <int>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLE, ...]
+}
+```
+
 ### GET /api/article/content/
 
 #### request
@@ -493,6 +520,22 @@ page: <int>
 #### response
 
 No data
+
+### GET /api/suggested_words/
+
+#### request
+
+```
+word: <str>
+```
+
+#### response
+
+```json
+{
+	'suggested_words' = [<str>, ...]
+}
+```
 
 ## Picture Bed
 
@@ -611,6 +654,66 @@ time: <str, format of '%Y-%m-%d %H:%M:%S'>
 ```json
 {
 	'articles': [ARTICLE, ...]
+}
+```
+
+## User Actions
+
+### GET /user_actions/score/ (login required)
+
+#### request
+
+No data
+
+#### response
+
+```json
+{
+	'score': <int>,
+	'rank': <int>
+}
+```
+
+### GET /user_actions/actions/ (login required)
+
+#### request
+
+```
+page: <int>
+```
+
+#### response
+
+```json
+{
+	'actions': [ACTION, ...]
+}
+
+ACTION = {
+	'type': <str, read_article/make_comment>,
+	'time': <str, format of '%Y-%m-%d %H:%M:%S'>,
+	'value': {
+		'comment_id': <int>,
+		'comment_content': <str>,
+		'article_id': <id>,
+		'article_title': <str>
+	}
+}
+```
+
+### GET /user_actions/rank/
+
+#### request
+
+```
+page: <int>
+```
+
+#### response
+
+```json
+{
+	'users': [USER, ...]
 }
 ```
 
