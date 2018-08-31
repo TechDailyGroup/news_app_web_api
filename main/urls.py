@@ -15,6 +15,7 @@ urlpatterns = [
     path('article/list/', views.get_article_list),
     path('article/search/', views.search_for_article),
     path('article/recommended/', views.get_recommended_article_list),
+    path('article/similar_artilces/', views.get_similar_articles),
     path('article/content/', views.get_article_content),
     path('article/new/', views.publish_article),
     path('article/change/', views.change_article),
@@ -22,4 +23,5 @@ urlpatterns = [
     path('article/comment/new/', views.make_comment),
     path('article/like/', views.like_the_article),
     path('article/like_or_not/', views.user_like_article_or_not),
+    path('suggested_words/', views.get_suggested_words),
 ]

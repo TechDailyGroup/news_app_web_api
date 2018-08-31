@@ -169,14 +169,18 @@ def user_like_article_or_not(request):
     
 @require_GET
 def get_recommended_article_list(request):
-    """
+
+    # TODO - fake function
+    return get_article_list(request)
+
+@require_GET
+def get_similar_articles(request):
+    
     article_id = request.GET["id"]
     search_engine = SearchEngine("10.144.5.124", "8983")
     suggested_article_ids =  search_engine.morelikethis(article_id)
 
     json_dict = get_json_dict(data={'articles': []})
-
-    print(suggested_article_ids)
 
     for suggested_article_id in suggested_article_ids:
         try:
@@ -185,8 +189,6 @@ def get_recommended_article_list(request):
         except:
             pass
     return JsonResponse(json_dict)
-    """
-    return get_article_list(request)
 
 @require_GET
 def get_article_content(request):
@@ -380,3 +382,17 @@ def unsubscribe_section(request):
     section.subscribers.remove(request.user.account)
 
     return JsonResponse(get_json_dict(data={}))
+
+@require_GET
+def get_suggested_words(request):
+
+    word = request.GET["word"]
+
+    search_engine = SearchEngine("10.144.5.124", "8983")
+
+    try:
+        suggested_words = search_engine.suggest(word)
+    except:
+        suggested_words = []
+
+    return JsonResponse(get_json_dict(data={'suggested_words': suggested_words}))

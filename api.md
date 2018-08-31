@@ -386,6 +386,22 @@ page: <int>
 }
 ```
 
+### GET /api/article/similar_articles/
+
+#### request
+
+```
+id: <int>
+```
+
+#### response
+
+```json
+{
+	'articles': [ARTICLE, ...]
+}
+```
+
 ### GET /api/article/content/
 
 #### request
@@ -493,6 +509,22 @@ page: <int>
 #### response
 
 No data
+
+### GET /api/suggested_words/
+
+#### request
+
+```
+word: <str>
+```
+
+#### response
+
+```json
+{
+	'suggested_words' = [<str>, ...]
+}
+```
 
 ## Picture Bed
 
