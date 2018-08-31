@@ -2,13 +2,13 @@ import json
 
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
 
 from main.models import Article
 from external_data_access.models import ArticleText
 from utils.api_utils import get_json_dict
+from account.decorators import login_required
 
 def __get_article_text(article):
 

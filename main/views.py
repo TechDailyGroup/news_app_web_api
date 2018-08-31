@@ -3,11 +3,11 @@ import json
 
 from django.utils import timezone
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 
 from account.models import *
+from account.decorators import login_required
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
 from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict
@@ -197,6 +197,13 @@ def get_article_content(request):
     article = Article.objects.get(id=article_id)
     json_dict = get_json_dict(data={})
     json_dict['data']['article'] = get_article_dict(article)
+
+    if request.user.is_authenticated:
+        account = request.user.account
+        account.score += 1
+        account.save()
+        action = Action(type="read_article", value="article_id:{0}".format(article_id), account=account)
+        action.save()
     
     return JsonResponse(json_dict)
 
@@ -305,7 +312,7 @@ def publish_article(request):
     new_article = Article(section=section, title=title, content=json.dumps(content), )
     new_article.save()
 
-    __update_article_images(new_article)    
+    __update_article_images(new_article)
     
     # TODO - remove code block
     if publish_time != None:
@@ -325,6 +332,11 @@ def make_comment(request):
     article = Article.objects.get(id=article_id)
     comment = Comment(article=article, creator=account, content=content)
     comment.save()
+
+    account.score += 3
+    account.save()
+    action = Action(type="make_comment", value="comment_id:".format(comment.id), account=account)
+    action.save()
 
     return JsonResponse(get_json_dict(data={}))
 
