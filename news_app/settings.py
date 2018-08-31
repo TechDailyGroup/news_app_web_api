@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'picture_bed',
     'external_data_access',
     'mind_graph',
+    'user_actions',
     'main',
 ]
 
