@@ -5,10 +5,10 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
-from django.contrib.auth.decorators import login_required
 
 from main.models import Article
 from mind_graph.models import ArticleTags
+from account.decorators import login_required
 
 from utils.api_utils import get_json_dict
 from utils.util_functions import get_article_dict

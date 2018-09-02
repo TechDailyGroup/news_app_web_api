@@ -47,6 +47,7 @@ def get_user_dict(account):
         'nickname': account.nickname,
         'gender': account.gender,
         'icon': account.icon.url,
+        'score': account.score,
     }
     return user_dict
 

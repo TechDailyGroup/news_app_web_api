@@ -3,11 +3,11 @@ import time
 
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from account.models import Account
 from account.forms import UserForm
+from account.decorators import login_required
 from utils.api_utils import get_json_dict
 from utils.util_functions import get_md5
 

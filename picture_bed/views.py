@@ -2,9 +2,9 @@ import time
 
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from account.decorators import login_required
 from utils.api_utils import get_json_dict
 from utils.util_functions import get_md5
 from picture_bed.models import Picture
