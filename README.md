@@ -4,6 +4,10 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.6 (2018-09-02)
+
+* Fix a performance issue for external_data_access
+
 ## Release 1.1.5 (2018-09-2)
 
 * Add user_actions model
