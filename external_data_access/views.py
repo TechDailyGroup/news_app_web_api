@@ -92,13 +92,11 @@ def get_not_indexed_articles(request):
     engine =request.GET['engine']
 
     if engine == "es":
-        not_indexed_articles = Article.objects.filter(Q(article_text=None) | Q(article_text__indexed_by_es=False))[0:10]
+        not_indexed_articles = Article.objects.raw('select a.id from main_article as a left outer join external_data_access_articletext as b on a.id = b.article_id where (b.id is null) or (b.indexed_by_es = false) limit 10')
     elif engine == "solr":
-        not_indexed_articles = Article.objects.filter(Q(article_text=None) | Q(article_text__indexed_by_solr=False))[0:10]
+        not_indexed_articles = Article.objects.raw('select a.id from main_article as a left outer join external_data_access_articletext as b on a.id = b.article_id where (b.id is null) or (b.indexed_by_solr = false) limit 10')
     else:
         return HttpResponse("The search engine name is not correct")
-
-    print(not_indexed_articles)
 
     articles_json_data = []
 
