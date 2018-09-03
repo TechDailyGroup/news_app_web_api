@@ -4,6 +4,10 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.7 (2018-09-03)
+
+* Change the way search engine uses to access data
+
 ## Release 1.1.6 (2018-09-02)
 
 * Fix a performance issue for external_data_access
