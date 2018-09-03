@@ -69,41 +69,21 @@ def get_latest_articles(request):
 
     return JsonResponse(json_dict)
 
-@login_required
 @require_GET
-def get_not_indexed_articles(request):
-    """
-    request: {
-      'engine': <str, "es"/"solr">
-    }
-    response: {
-      'articles': [{
-        'id': <int>,
-        'title': <str>,
-        'text': <str>,
-        'publish_time': <str>
-      }]
-    }
-    """
+def get_article_list(request):
 
-    if request.user.username != "TechDailyGroup":
-        return HttpResponse("Permission Denied")
+    article_id_st = int(request.GET['id'])
+    count = int(request.GET.get('count', 100))
+    count = min(100, count)
 
-    engine =request.GET['engine']
+    article_id_en = article_id_st + count
 
-    if engine == "es":
-        not_indexed_articles = Article.objects.raw('select a.id from main_article as a left outer join external_data_access_articletext as b on a.id = b.article_id where (b.id is null) or (b.indexed_by_es = false) limit 10')
-    elif engine == "solr":
-        not_indexed_articles = Article.objects.raw('select a.id from main_article as a left outer join external_data_access_articletext as b on a.id = b.article_id where (b.id is null) or (b.indexed_by_solr = false) limit 10')
-    else:
-        return HttpResponse("The search engine name is not correct")
+    articles = Article.objects.filter(id__gte=article_id_st, id__lt=article_id_en)
 
-    articles_json_data = []
+    json_dict = get_json_dict(data={"articles": []})
 
-    for article in not_indexed_articles:
-        try:
-            tmp = article.article_text
-        except:
+    for article in articles:
+        if not hasattr(article, 'article_text'):
             article_text = ArticleText(article=article, text=__get_article_text(article))
             article_text.save()
         article_dict = {
@@ -112,12 +92,6 @@ def get_not_indexed_articles(request):
             'text': article.article_text.text,
             'publish_time': article.publish_time.strftime("%Y-%m-%d %H:%M:%S")
         }
-        if engine == "es":
-            article.article_text.indexed_by_es = True
-        elif engine == "solr":
-            article.article_text.indexed_by_solr = True
-        article.article_text.save()
-        
-        articles_json_data.append(article_dict)
+        json_dict['data']['articles'].append(article_dict)
 
-    return JsonResponse(get_json_dict(data=articles_json_data))
+    return JsonResponse(json_dict)
