@@ -555,7 +555,7 @@ picture: <file, an image file>
 
 ## External Data Access
 
-### GET /external_data_access/latest_articles/ (login required, username must be 'nlp')
+### GET /external_data_access/latest_articles/ (login required, username must be 'TechDailyGroup')
 
 #### request
 
@@ -577,13 +577,13 @@ count: <int>
 }
 ```
 
-### GET /external_data_access/not_indexed_articles/ (login required, username must be 'nlp')
-
-Notice: This is a API for search engine testing
+### GET /external_data_access/article/list/
 
 #### request
 
-engine: <str, "es"/"solr">
+id: <int>
+
+count: <int>
 
 #### response
 
@@ -600,7 +600,7 @@ engine: <str, "es"/"solr">
 
 ## Mind Graph
 
-### POST /mind_graph/set_article_tags/ (login required, username must be 'nlp')
+### POST /mind_graph/set_article_tags/ (login required, username must be 'TechDailyGroup')
 
 #### request
 

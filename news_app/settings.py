@@ -25,8 +25,10 @@ SECRET_KEY = 'p2^zm1jmbudhxi41lc6(t4d*%&a@rvp-7#igo-#^05+)27t=^@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.144.5.123", ]
-
+if DEBUG:
+    ALLOWED_HOSTS = ["10.144.5.123", "www.tech-daily.cn"]
+else:
+    ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
 
 # Application definition
 
@@ -37,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wechat_api',
     'account',
     'picture_bed',
     'external_data_access',
     'mind_graph',
+    'wechat_api',
     'user_actions',
     'main',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,10 +86,10 @@ WSGI_APPLICATION = 'news_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'news_app',
-        'USER': 'news_app',
-        'PASSWORD': '*********',
-        'HOST': 'localhost',
+        'NAME': '<db_name>',
+        'USER': '<db_user>',
+        'PASSWORD': '<db_password>',
+        'HOST': '<db_host>',
     }
 }
 
@@ -132,3 +135,41 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'media/'
+
+if DEBUG:
+    # CORS
+
+    INSTALLED_APPS.append('corsheaders') # cors: "pip install django-cors-headers" before use this app
+
+    MIDDLEWARE.append('corsheaders.middleware.CorsMiddleware') # cors
+    MIDDLEWARE.append('django.middleware.common.CommonMiddleware') # cors
+
+    CORS_ALLOW_CREDENTIALS = True
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ORIGIN_WHITELIST = (
+        '*',
+    )
+
+    CORS_ALLOW_METHODS = (
+        'DELETE',
+        'GET',
+        'OPTIONS',
+        'PATCH',
+        'POST',
+        'PUT',
+        'VIEW',
+    )
+
+    CORS_ALLOW_HEADERS = (
+        'XMLHttpRequest',
+        'X_FILENAME',
+        'accept-encoding',
+        'authorization',
+        'content-type',
+        'dnt',
+        'origin',
+        'user-agent',
+        'x-csrftoken',
+        'x-requested-with',
+        'Pragma',
+    )
