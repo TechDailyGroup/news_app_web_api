@@ -4,4 +4,4 @@ MAINTAINER "DillionMango@gmail.com"
 
 RUN mkdir /root/news_app_web_api
 
-COPY ./* /root/news_app_web_api/
+COPY ./ /root/news_app_web_api/
