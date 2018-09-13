@@ -4,6 +4,14 @@ This is the backend of a news app
 
 # Release Notes
 
+## Release 1.1.8 (2018-09-13)
+
+* Add support for CI/CD, including:
+  * Dockerfile
+  * Kubernetes deployment yaml file
+  * Parameterized settings
+* minor fix
+
 ## Release 1.1.7 (2018-09-03)
 
 * Change the way search engine uses to access data
