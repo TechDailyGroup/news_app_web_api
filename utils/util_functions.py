@@ -28,10 +28,17 @@ def get_article_dict(article):
         'title': article.title,
         'section': get_section_dict(section),
         'publish_time': timezone.localtime(article.publish_time).strftime("%Y-%m-%d %H:%M:%S"),
-        'images': [article.image1_url, article.image2_url, article.image3_url],
+        'images': [],
         'content': json.loads(article.content),
         'liker_count': article.likers.count(),
     }
+    if (article.image1_url != None):
+        ret['images'].append(article.image1_url)
+    if (article.image2_url != None):
+        ret['images'].append(article.image2_url)
+    if (article.image3_url != None):
+        ret['images'].append(article.image3_url)
+    
 
     while True:
         try:

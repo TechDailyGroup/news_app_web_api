@@ -1,0 +1,27 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: param_name
+spec:
+  replicas: param_replicas
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: param_name
+    spec:
+      containers:
+      - name: param_name
+        image: param_image
+        imagePullPolicy: Always
+        env:
+        - name: LANG
+          value: C.UTF-8
+        volumeMounts:
+        - name: news-app-web-api-dev-data
+          mountPath: /nfs/
+      volumes:
+      - name: news-app-web-api-dev-data
+        persistentVolumeClaim:
+          claimName: param_pvc
