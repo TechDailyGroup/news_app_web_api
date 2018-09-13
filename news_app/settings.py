@@ -26,7 +26,7 @@ SECRET_KEY = 'p2^zm1jmbudhxi41lc6(t4d*%&a@rvp-7#igo-#^05+)27t=^@'
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ["10.144.5.123", "www.tech-daily.cn"]
+    ALLOWED_HOSTS = ["10.144.5.123", "www.tech-daily.cn", "10.144.5.121"]
 else:
     ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
 
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'news_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'param_db_name',
-        'USER': 'param_db_user',
-        'PASSWORD': 'param_db_password',
-        'HOST': 'param_db_host',
+        'NAME': 'news_app_test',
+        'USER': 'news_app',
+        'PASSWORD': '3223132,./aAa',
+        'HOST': '10.144.5.121',
     }
 }
 
@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = '/nfs/media/'
 
 if DEBUG:
     # CORS
