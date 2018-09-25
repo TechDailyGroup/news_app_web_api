@@ -40,7 +40,7 @@ class Article(models.Model):
         return "{section} {title}".format(section=self.section.name, title=self.title)
 
 class Comment(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
     creator = models.ForeignKey(Account, on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True, db_index=True)
     content = models.CharField(max_length=512)

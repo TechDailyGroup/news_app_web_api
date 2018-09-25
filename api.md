@@ -186,6 +186,7 @@ Here are some frequently used data structures in the json response.
 	'images': [<str, image url>, ...],
 	'content': [ARTICLE_CONTENT_ELEMENT, ...],
 	'liker_count': <int>,
+	'comment_count': <int>
 }
 ```
 
