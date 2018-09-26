@@ -6,9 +6,9 @@ class APIMimer:
 
     def __init__(self, api_host):
         self.API_HOST = api_host
-        self.LOGIN_URL = "{0}/{1}".format(self.API_HOST, "/account/login/")
-        self.UPLOAD_PICTURE_URL = "{0}/{1}".format(self.API_HOST, "/picture_bed/upload/")
-        self.UPLOAD_ARTICLE_URL = "{0}/{1}".format(self.API_HOST, "/api/article/new/")
+        self.LOGIN_URL = "{0}/{1}".format(self.API_HOST, "account/login/")
+        self.UPLOAD_PICTURE_URL = "{0}/{1}".format(self.API_HOST, "picture_bed/upload/")
+        self.UPLOAD_ARTICLE_URL = "{0}/{1}".format(self.API_HOST, "api/article/new/")
         self.session = requests.session()
 
     def __assert_response_valid(self, response):
