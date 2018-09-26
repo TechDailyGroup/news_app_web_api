@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.conf import settings
 
 from account.models import *
 from account.decorators import login_required
@@ -102,14 +103,17 @@ def get_article_list(request):
 @require_GET
 def search_for_article(request):
 
-    keyword = request.GET['keyword']
-    try:
-        page = int(request.GET['page'])
-    except:
-        page = 0
+    if settings.DEBUG:
+        article_ids = [51540, 51541, 51542, 51543, 51544, 51545, 51546, 51547, 51548, 51549, 51550, 51551, 51552, 51553, 51554, 51555, 51556, 51557, 51558, 51559]
+    else:
+        keyword = request.GET['keyword']
+        try:
+            page = int(request.GET['page'])
+        except:
+            page = 0
 
-    search_engine = SearchEngine("10.144.5.124", "8983")
-    article_ids = search_engine.query(keyword, page)
+        search_engine = SearchEngine("10.144.5.124", "8983")
+        article_ids = search_engine.query(keyword, page)
 
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
