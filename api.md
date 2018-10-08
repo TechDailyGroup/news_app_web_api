@@ -460,6 +460,20 @@ id: <int>
 }
 ```
 
+#### GET /api/article/liker/
+
+#### request
+
+article_id: <int>
+
+#### response
+
+```json
+{
+	'likers': [USER, ...]
+}
+```
+
 ### POST /api/article/new/ (login required)
 
 #### request
