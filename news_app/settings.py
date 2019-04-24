@@ -26,7 +26,7 @@ SECRET_KEY = 'p2^zm1jmbudhxi41lc6(t4d*%&a@rvp-7#igo-#^05+)27t=^@'
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ["10.144.5.123", "www.tech-daily.cn"]
+    ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
 else:
     ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
 
