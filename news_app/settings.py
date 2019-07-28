@@ -26,7 +26,7 @@ SECRET_KEY = 'p2^zm1jmbudhxi41lc6(t4d*%&a@rvp-7#igo-#^05+)27t=^@'
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 else:
     ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
 
@@ -83,15 +83,23 @@ WSGI_APPLICATION = 'news_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'param_db_name',
-        'USER': 'param_db_user',
-        'PASSWORD': 'param_db_password',
-        'HOST': 'param_db_host',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': "django.db.backends.sqlite3",
+            'NAME': "os.path.join(BASE_DIR, 'db.sqlite3')"
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'param_db_name',
+            'USER': 'param_db_user',
+            'PASSWORD': 'param_db_password',
+            'HOST': 'param_db_host',
+        }
+    }
 
 
 # Password validation

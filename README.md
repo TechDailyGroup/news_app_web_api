@@ -56,3 +56,18 @@ This is the backend of a news app
 # APIs
 
 Please refer to the api.md
+
+# Development
+
+## Required Softwares
+
+1. Git
+2. Python3
+3. (Optional) Postman (This is used to make manual requests to your WebAPI)
+
+## Prepare
+
+1. Clone the repo into your local folder, enter the folder
+2. Run `pip install -r requirements.txt` to install package dependencies
+3. Run `python3 manage.py migrate` to setup your database
+4. Run `python3 manage.py runserver 0.0.0.0:8000` to start the server
