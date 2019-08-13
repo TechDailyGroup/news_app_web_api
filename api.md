@@ -1,24 +1,24 @@
 # News APP Web API
-
+**Note:** All keys in json format should use " " other than ' '.
 All responses use the format below:
 
 ```json
 {
-	'err_code': <int, 0 means success, otherwise fail>,
-	'message': <str, human-readable message replied from the server>,
-	'data': <data, this part is different from api to api>
+	"err_code": <int, 0 means success, otherwise fail>,
+	"message": <str, human-readable message replied from the server>,
+	"data": <data, this part is different from api to api>
 }
 ```
 
 The response sections below only show you the `data` part of the reply. But remember, the complete response format is like above.
 
-If there is 'login required' following the request url, and if you are not logined, then the following response will be returned (with HTTP status code `403`):
+If there is "login required" following the request url, and if you are not logined, then the following response will be returned (with HTTP status code `403`):
 
 ```json
 {
-	'err_code': -1,
-	'message': 'Login Required',
-	'data': {}
+	"err_code": -1,
+	"message": "Login Required",
+	"data": {}
 }
 ```
 
@@ -34,10 +34,10 @@ Register a new user
 
 ```json
 {
-	'username': <str>,
-	'password': <str>,
-	'gender': <'M'/'F'>,
-	'nickname': <str>
+	"username": <str>,
+	"password": <str>,
+	"gender": <"M"/"F">,
+	"nickname": <str>
 }
 ```
 
@@ -53,8 +53,8 @@ Login
 
 ```json
 {
-	'username': <str>,
-	'password': <str>
+	"username": <str>,
+	"password": <str>
 }
 ```
 
@@ -86,10 +86,10 @@ No data
 
 ```json
 {
-	'username': <str>,
-	'gender': <'M'/'F'>,
-	'nickname': <str>,
-	'icon': <str, url of the icon>
+	"username": <str>,
+	"gender": <"M"/"F">,
+	"nickname": <str>,
+	"icon": <str, url of the icon>
 }
 ```
 
@@ -99,8 +99,8 @@ No data
 
 ```json
 {
-	'nickname': <str>,
-	'gender': <str, 'M'/'F'>
+	"nickname": <str>,
+	"gender": <str, "M"/"F">
 }
 ```
 
@@ -118,7 +118,7 @@ picture: <file, an image file>
 
 ```json
 {
-	'icon': <str, new icon url>
+	"icon": <str, new icon url>
 }
 ```
 
@@ -128,8 +128,8 @@ picture: <file, an image file>
 
 ```json
 {
-	'old_password': <str>,
-	'new_password': <str>
+	"old_password": <str>,
+	"new_password": <str>
 }
 ```
 
@@ -147,11 +147,11 @@ Here are some frequently used data structures in the json response.
 
 ```json
 {
-	'id': <int>,
-	'nickname': <str>,
-	'gender': <str, 'M'/'F'>,
-	'icon': <str, url of the picture>,
-	'score': <int>
+	"id": <int>,
+	"nickname": <str>,
+	"gender": <str, "M"/"F">,
+	"icon": <str, url of the picture>,
+	"score": <int>
 }
 ```
 
@@ -159,10 +159,10 @@ Here are some frequently used data structures in the json response.
 
 ```json
 {
-	'name': <str>,
-	'creator': USER,
-	'description': <str>,
-	'icon': <str, url of the picture>
+	"name": <str>,
+	"creator": USER,
+	"description": <str>,
+	"icon": <str, url of the picture>
 }
 ```
 
@@ -170,8 +170,8 @@ Here are some frequently used data structures in the json response.
 
 ```json
 {
-	'type': <text/image>,
-	'data': <str, text or image url>
+	"type": <text/image>,
+	"data": <str, text or image url>
 }
 ```
 
@@ -179,13 +179,13 @@ Here are some frequently used data structures in the json response.
 
 ```json
 {
-	'id': <int>,
-	'title': <str>,
-	'section': SECTION,
-	'publish_time': <str, yyyy-mm-dd>,
-	'images': [<str, image url>, ...],
-	'content': [ARTICLE_CONTENT_ELEMENT, ...],
-	'liker_count': <int>,
+	"id": <int>,
+	"title": <str>,
+	"section": SECTION,
+	"publish_time": <str, yyyy-mm-dd>,
+	"images": [<str, image url>, ...],
+	"content": [ARTICLE_CONTENT_ELEMENT, ...],
+	"liker_count": <int>,
 }
 ```
 
@@ -193,9 +193,9 @@ Here are some frequently used data structures in the json response.
 
 ```json
 {
-	'user': USER,
-	'time': <str, YYYY-mm-dd>,
-	'content': <str>
+	"user": USER,
+	"time": <str, YYYY-mm-dd>,
+	"content": <str>
 }
 ```
 
@@ -207,11 +207,11 @@ No data
 
 #### response
 
-If user doesn't login or user subscribes no section, then some default sections are returned
+If user doesn"t login or user subscribes no section, then some default sections are returned
 
 ```json
 {
-	'sections': [SECTION, ...]
+	"sections": [SECTION, ...]
 }
 ```
 
@@ -225,7 +225,7 @@ No data
 
 ```json
 {
-	'sections': [SECTION, ...]
+	"sections": [SECTION, ...]
 }
 ```
 
@@ -239,7 +239,7 @@ No data
 
 ```json
 {
-	'sections:' [SECTION, ...]
+	"sections:" [SECTION, ...]
 }
 ```
 
@@ -249,8 +249,8 @@ No data
 
 ```json
 {
-	'name': <str>,
-	'description': <str>
+	"name": <str>,
+	"description": <str>
 }
 ```
 
@@ -268,7 +268,7 @@ section: <str>
 
 ```json
 {
-	'section': SECTION
+	"section": SECTION
 }
 ```
 
@@ -284,7 +284,7 @@ keyword: <str>
 
 ```json
 {
-	'sections': [SECTION, ...]
+	"sections": [SECTION, ...]
 }
 ```
 
@@ -294,7 +294,7 @@ keyword: <str>
 
 ```json
 {
-	'section': <str>
+	"section": <str>
 }
 ```
 
@@ -308,7 +308,7 @@ No data
 
 ```json
 {
-	'section': <str>
+	"section": <str>
 }
 ```
 
@@ -322,9 +322,9 @@ No data
 
 ```json
 {
-	'old_section_name': <str>,
-	'new_section_name': <str>,
-	'description': <str>
+	"old_section_name": <str>,
+	"new_section_name": <str>,
+	"description": <str>
 }
 ```
 
@@ -343,7 +343,7 @@ section: <str>
 
 ```json
 {
-	'icon': <str, new icon url>
+	"icon": <str, new icon url>
 }
 ```
 
@@ -360,7 +360,7 @@ page: <int>
 
 ```json
 {
-	'articles': [ARTICLES, ...]
+	"articles": [ARTICLES, ...]
 }
 ```
 
@@ -377,7 +377,7 @@ page: <int>
 
 ```json
 {
-	'articles': [ARTICLE, ...]
+	"articles": [ARTICLE, ...]
 }
 ```
 
@@ -393,7 +393,7 @@ page: <int>
 
 ```json
 {
-	'articles': [ARTICLE, ...]
+	"articles": [ARTICLE, ...]
 }
 ```
 
@@ -409,7 +409,7 @@ id: <int>
 
 ```json
 {
-	'articles': [ARTICLE, ...]
+	"articles": [ARTICLE, ...]
 }
 ```
 
@@ -425,7 +425,7 @@ id: <int>
 
 ```json
 {
-	'article': ARTICLE
+	"article": ARTICLE
 }
 ```
 
@@ -435,7 +435,7 @@ id: <int>
 
 ```
 {
-	'id': <int>
+	"id": <int>
 }
 ```
 
@@ -455,7 +455,7 @@ id: <int>
 
 ```json
 {
-	'like': <boolean, true/false>
+	"like": <boolean, true/false>
 }
 ```
 
@@ -465,9 +465,9 @@ id: <int>
 
 ```json
 {
-	'title': <str>,
-	'section': <str>,
-	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+	"title": <str>,
+	"section": <str>,
+	"content": [ARTICLE_CONTENT_ELEMENT, ...]
 }
 ```
 
@@ -481,8 +481,8 @@ No data
 
 ```
 {
-	'article_id': <int>,
-	'content': <str>
+	"article_id": <int>,
+	"content": <str>
 }
 ```
 
@@ -501,7 +501,7 @@ page: <int>
 
 ```json
 {
-	'comments': [COMMENT, ...]
+	"comments": [COMMENT, ...]
 }
 ```
 
@@ -511,9 +511,9 @@ page: <int>
 
 ```json
 {
-	'id': <int>,
-	'title': <str>,
-	'content': [ARTICLE_CONTENT_ELEMENT, ...]
+	"id": <int>,
+	"title": <str>,
+	"content": [ARTICLE_CONTENT_ELEMENT, ...]
 }
 ```
 
@@ -533,7 +533,7 @@ word: <str>
 
 ```json
 {
-	'suggested_words' = [<str>, ...]
+	"suggested_words" = [<str>, ...]
 }
 ```
 
@@ -549,13 +549,13 @@ picture: <file, an image file>
 
 ```json
 {
-	'picture_url': <str, url of the picture>
+	"picture_url": <str, url of the picture>
 }
 ```
 
 ## External Data Access
 
-### GET /external_data_access/latest_articles/ (login required, username must be 'TechDailyGroup')
+### GET /external_data_access/latest_articles/ (login required, username must be "TechDailyGroup")
 
 #### request
 
@@ -568,11 +568,11 @@ count: <int>
 
 ```json
 {
-	'articles': [{
-		    'id': <int>,
-		    'title': <str>,
-		    'text': <str>,
-		    'publish_time': <str, YYYY-mm-dd>
+	"articles": [{
+		    "id": <int>,
+		    "title": <str>,
+		    "text": <str>,
+		    "publish_time": <str, YYYY-mm-dd>
 	}, ...]
 }
 ```
@@ -589,28 +589,28 @@ count: <int>
 
 ```json
 {
-	'articles': [{
-		    'id': <int>,
-		    'title': <str>,
-		    'text': <str>,
-		    'publish_time': <str, YYYY-mm-dd>
+	"articles": [{
+		    "id": <int>,
+		    "title": <str>,
+		    "text": <str>,
+		    "publish_time": <str, YYYY-mm-dd>
 	}, ...]
 }
 ```
 
 ## Mind Graph
 
-### POST /mind_graph/set_article_tags/ (login required, username must be 'TechDailyGroup')
+### POST /mind_graph/set_article_tags/ (login required, username must be "TechDailyGroup")
 
 #### request
 
 ```json
 {
-	'id': <int>,
-	'tags': {
-		'level1': <str>,
-		'level2': <str>,
-		'level3': <str>
+	"id": <int>,
+	"tags": {
+		"level1": <str>,
+		"level2": <str>,
+		"level3": <str>
 	}
 }
 ```
@@ -624,17 +624,17 @@ No data
 #### request
 
 ```
-time: <str, format of '%Y-%m-%d %H:%M:%S'>
+time: <str, format of "%Y-%m-%d %H:%M:%S">
 ```
 
 #### response
 
 ```json
-'mind_graph': [{
-	      'level1': <str>,
-	      'level2': <str>,
-	      'level3': <str>,
-	      'count': int
+"mind_graph": [{
+	      "level1": <str>,
+	      "level2": <str>,
+	      "level3": <str>,
+	      "count": int
 }, ...]
 ```
 
@@ -646,14 +646,14 @@ time: <str, format of '%Y-%m-%d %H:%M:%S'>
 label1: <str>
 label2: <str>
 label3: <str>
-time: <str, format of '%Y-%m-%d %H:%M:%S'>
+time: <str, format of "%Y-%m-%d %H:%M:%S">
 ```
 
 #### response
 
 ```json
 {
-	'articles': [ARTICLE, ...]
+	"articles": [ARTICLE, ...]
 }
 ```
 
@@ -669,8 +669,8 @@ No data
 
 ```json
 {
-	'score': <int>,
-	'rank': <int>
+	"score": <int>,
+	"rank": <int>
 }
 ```
 
@@ -686,17 +686,17 @@ page: <int>
 
 ```json
 {
-	'actions': [ACTION, ...]
+	"actions": [ACTION, ...]
 }
 
 ACTION = {
-	'type': <str, read_article/make_comment>,
-	'time': <str, format of '%Y-%m-%d %H:%M:%S'>,
-	'value': {
-		'comment_id': <int>,
-		'comment_content': <str>,
-		'article_id': <id>,
-		'article_title': <str>
+	"type": <str, read_article/make_comment>,
+	"time": <str, format of "%Y-%m-%d %H:%M:%S">,
+	"value": {
+		"comment_id": <int>,
+		"comment_content": <str>,
+		"article_id": <id>,
+		"article_title": <str>
 	}
 }
 ```
@@ -713,7 +713,7 @@ page: <int>
 
 ```json
 {
-	'users': [USER, ...]
+	"users": [USER, ...]
 }
 ```
 
@@ -725,8 +725,8 @@ page: <int>
 
 ```
 {
-        'code': <str>,
-	'nickname': <str>
+        "code": <str>,
+	"nickname": <str>
 }
 ```
 
@@ -734,6 +734,6 @@ page: <int>
 
 ```
 {
-	'sessionid': <str>
+	"sessionid": <str>
 }
 ```
