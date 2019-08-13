@@ -7,12 +7,12 @@ import pymysql
 
 from api_mimes import APIMimer
 
-HOST = "10.144.5.123"
+HOST = "10.144.5.121"
 USERNAME = "web_crawler"
 PASSWORD = "curidemo"
 DATABASE = "web_crawler"
 
-API_HOST = "http://10.144.5.123"
+API_HOST = "http://10.144.5.127:10000"
 
 HTML_ROOT_PATH = "/var/www/html/"
 
