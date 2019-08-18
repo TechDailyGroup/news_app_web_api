@@ -31,6 +31,7 @@ def get_article_dict(article):
         'images': [],
         'content': json.loads(article.content),
         'liker_count': article.likers.count(),
+        'comment_count': article.comments.count(),
     }
     if (article.image1_url != None):
         ret['images'].append(article.image1_url)

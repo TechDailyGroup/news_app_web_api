@@ -185,7 +185,7 @@ Here are some frequently used data structures in the json response.
 	"publish_time": <str, yyyy-mm-dd>,
 	"images": [<str, image url>, ...],
 	"content": [ARTICLE_CONTENT_ELEMENT, ...],
-	"liker_count": <int>,
+	"liker_count": <int>
 }
 ```
 
@@ -456,6 +456,20 @@ id: <int>
 ```json
 {
 	"like": <boolean, true/false>
+}
+```
+
+#### GET /api/article/liker/
+
+#### request
+
+article_id: <int>
+
+#### response
+
+```json
+{
+	'likers': [USER, ...]
 }
 ```
 

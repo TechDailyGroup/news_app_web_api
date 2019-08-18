@@ -23,7 +23,6 @@ API_HOST = "http://127.0.0.1:8000"
 # absolute path
 HTML_ROOT_PATH = os.path.abspath(
     "../..") + os.path.sep + "tech_daily_crawler" + os.path.sep + "converted_html_files" + os.path.sep
-# print(HTML_ROOT_PATH)
 
 apimimer = APIMimer(API_HOST)
 apimimer.login("TechDailyGroup", "curidemo")
