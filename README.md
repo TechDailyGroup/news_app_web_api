@@ -137,4 +137,4 @@ See different [contributing files](./Contributing.md) in three parts.
 
 ## License
 
-[MIT © Richard McRichface.](../LICENSE)
+[MIT © Tech Daily Group.](../LICENSE)
