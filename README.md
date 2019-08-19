@@ -16,7 +16,7 @@ This program consists of three main parts, backend, frontend, and web crawler. I
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-- [Release Notes](#releasenotes)
+- [Releases](#releases)
 - [License](#license)
 
 ## Background
@@ -131,7 +131,7 @@ java Main.java urlcrawler/htmlcrawler/htmlparser/htmlcnoverter
 
 See [api.md](api.md) in backend part.
 
-## Release Notes
+## Releases
 
 See [release notes](./release_notes.md).
 
