@@ -70,7 +70,7 @@ def get_separated_path(unseparated):
     print("before replace:", unseparated)
     test = ""
     for i in range(len(unseparated)):
-        if not unseparated[i].isalpha() and not unseparated[i].isdigit():
+        if not unseparated[i].isalpha() and not unseparated[i].isdigit() and unseparated[i] != '.':
             test += '0'
         else:
             test += unseparated[i]
