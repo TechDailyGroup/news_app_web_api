@@ -15,20 +15,19 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'p2^zm1jmbudhxi41lc6(t4d*%&a@rvp-7#igo-#^05+)27t=^@'
+SECRET_KEY = 'param_secret_key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
+    ALLOWED_HOSTS = ['param_debug_allowed_host', ]
 else:
-    ALLOWED_HOSTS = ["10.144.5.127", "www.tech-daily.cn"]
+    ALLOWED_HOSTS = ['param_no_debug_allowed_host', ]
 
 # Application definition
 
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'user_actions',
     'main',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'news_app.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -90,9 +87,20 @@ DATABASES = {
         'USER': 'param_db_user',
         'PASSWORD': 'param_db_password',
         'HOST': 'param_db_host',
+        'PORT': 'param_db_port',
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'news_app',
+#         'USER': 'news_app',
+#         'PASSWORD': 'curidemo',
+#         'HOST': '47.98.61.17',
+#         'PORT': '13306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -112,7 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -126,29 +133,43 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(os.path.dirname("news_app"), "news_app/static/")
 
+STATIC_URL = '/static/'
+# Django在收到MEDIA_URL开头的url的时候，会去MEDIA_ROOT里找对应的静态文件
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/nfs/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname("news_app"), "news_app/media/")
+
+# # Change in django 2.1. Need to set these two fields to be compatible with django2.0
+# SESSION_COOKIE_SAMESITE = None
+# CRSF_COOKIE_SAMESITE = None
+
+# # SMTP
+# SMTP_HOST = "param_smtp_host"
+# SMTP_PORT = "param_smtp_port"
+# SMTP_FROM_ADDR = "param_smtp_from_addr"
+# SMTP_PASSWORD = "param_smtp_password"
+#
+# # DEPLOY HOST
+# DEPLOY_HOST = "param_deploy_host"
 
 if DEBUG:
     # CORS
 
-    INSTALLED_APPS.append('corsheaders') # cors: "pip install django-cors-headers" before use this app
+    INSTALLED_APPS.append('corsheaders')  # cors: "pip install django-cors-headers" before use this app
 
-    MIDDLEWARE.append('corsheaders.middleware.CorsMiddleware') # cors
-    MIDDLEWARE.append('django.middleware.common.CommonMiddleware') # cors
+    MIDDLEWARE.append('corsheaders.middleware.CorsMiddleware')  # cors
+    MIDDLEWARE.append('django.middleware.common.CommonMiddleware')  # cors
 
     CORS_ALLOW_CREDENTIALS = True
     CORS_ORIGIN_ALLOW_ALL = True
-    CORS_ORIGIN_WHITELIST = (
-        '*',
-    )
+    # CORS_ORIGIN_WHITELIST = (
+    #     '*',
+    # )
 
     CORS_ALLOW_METHODS = (
         'DELETE',
