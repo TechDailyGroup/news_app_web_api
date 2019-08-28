@@ -25,9 +25,9 @@ SECRET_KEY = 'param_secret_key'
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ['param_debug_allowed_host', ]
+    ALLOWED_HOSTS = ['param_debug_allowed_host']
 else:
-    ALLOWED_HOSTS = ['param_no_debug_allowed_host', ]
+    ALLOWED_HOSTS = ['param_no_debug_allowed_host']
 
 # Application definition
 
