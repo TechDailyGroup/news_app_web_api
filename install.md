@@ -23,7 +23,17 @@ In readme, we said that this program can be taken apart as three parts, so here 
         -   [3.1 下载依赖](#3.1 下载依赖)
         -   [3.2 更新数据库](#3.2 更新数据库)
         -   [3.3 运行爬虫](#3.3 运行爬虫)
--   [Installation on Linux Server](#Installation on Linux Server)
+-   [Deploy on Linux Server](#Deploy on Linux Server)
+    -   [Step 1. Config Database](#Step 1. Config Database)
+        -   [1.1 下载安装包](#1.1 下载安装包)
+        -   [1.2 操作步骤](#1.2 操作步骤)
+    -   [Step 2. Deploy Frontend & Backend](#Step 2. Deploy Frontend & Backend)
+        -   [2.1 操作步骤](#2.1 操作步骤)
+        -   [2.2 注意事项](#2.2 注意事项)
+    -   [Step 3. Deploy Crawler & Upload Data](#Step 3. Deploy Crawler & Upload Data)
+        -   [3.1 操作步骤](#3.1 操作步骤)
+    -   [Step 4. More Work in the Future](#Step 4. More Work in the Future)
+        -   [4.1 TODO](#4.1 TODO)
 
 ## Installation on Windows
 
@@ -114,7 +124,7 @@ Available subcommands:
 
 ​		该部分是等爬虫收集完数据之后运行该部分的程序将数据上传的服务端。可以先弄明白web_crawler再回头看这一部分。
 
-​		数据上传这部分，需要用到一个uploaded的表作为辅助，建表语句已经写好在爬虫文件夹下的create_table_for_webcrawler.sql文件下。
+​		数据上传这部分，需要用到一个uploaded的表作为辅助，建表语句已经写好在爬虫文件夹下的create_table_for_crawler.sql文件下。
 
 ​		数据上传用到的代码主要在/utils/tech_daily_data_migration.py和/utils/api_mimes.py两个文件中。基本流程是与数据库建立连接，然后从pages表中获取converted_html的内容，经过解析后从本地目录将之前爬虫已经保存的json格式的数据上传到服务器。
 
@@ -123,6 +133,7 @@ Available subcommands:
 >   1. api_mimes.py中url部分重复了一个“/”导致路径解析错误。
 >   2. tech_daily_data_migration.py中HTML_ROOT_PATH填写的是之前爬虫爬完的converted_html存在本地的绝对路径
 >   3. tech_daily_data_migration.py中get_unuploaded_articles方法中得到的converted_html_path的值未经解析，与Windows环境下的路径不符，此处只好依照web_crawler中tech_daily_crawler\src\com\zelkova\datacrawler\webcrawler\htmlconverter\components\HtmlConverterService.java这个文件中的getMD5ChildPath方法对html_path的分割方法写了一个get_separated_path方法，将converted_html_path再处理一遍得到正确路径。
+>   4. **第3条中的get_seperated_path仅在windows环境下需要使用，在linux环境要注释掉。**
 
 ### Part II. tech_daily_frontend
 
@@ -160,48 +171,144 @@ Available subcommands:
 
 ​		爬虫整个流程大致分为四步工作：urlcrawler, htmlcrawler,  htmlparser, htmlconverter，对应的参数全都在sample.properties中配置好。main.sh是一个执行脚本，但是受限于Windows工作环境无法使用。因此我们需要分别运行这四个步骤，将urlcrawler, htmlcrawler,  htmlparser, htmlconverter分别配上 sample.properties组成双参数运行/src/com.zelkova.datacrawler.webcrawler/Main.java程序，然后进行工作。爬虫四个步骤完成后，可以在数据库中看到爬下来的数据，并且可以看到之前创建的存放converted_html的目录下已经装了不少文件。这些文件在之后的数据上传时需要用到。
 
-## Installation on Linux Server
+## Deploy on Linux Server
 
-### Part I. news_app_web_api
+### Step 1. Config Database
 
-#### 1.1 配置环境
+​		数据库单独一个服务器，放在`14`子服务器上。
 
-​		配置环境的工作和在Windows下十分相似，**首先确保使用的Python和pip版本都是3.x**，然后用pip install -r requirements.txt安装依赖，在安装mysqlclient的时候如果碰见错误，就搜索相关解决方案，好像要先安装`sudo apt-get install libmysqlclient-dev`，再继续安装。
+#### 1.1 下载安装包
 
-​		其他的细节和Windows下大同小异，在此不做赘述。
+```bash
+ sudo apt-get install mysql-server
+ sudo apt-get install mysql-client
+ sudo apt-get install libmysqlclient-dev
+```
 
-​		注意，如果前端部分也要在Linux服务器上跑的话，需要在后端的/news_app/settings.py文件中将服务器的ip添加到ALLOWED_HOSTS中，允许前端对其的访问。
+#### 1.2 操作步骤
 
-### Part II. tech_daily_frontend
+1. 发送文件到主服务器 `scp deploy.sh **@**:/home/**`
 
-#### 2.1 配置环境
+2. 登陆主服务器，再发送到 数据库的服务器 `scp deploy.sh **@**:/home/**`
 
-​		前端部分的installation参见下方：
+3. 登陆子服务器，安装git，mysql(已安装)等，配置public_key，添加到github，等。
+
+4. 创建mysql用户:
+
+    ```bash
+    username: news_app
+    password: ********
+    ```
+
+5. 登陆mysql `mysql -u news_app -p`，创建database: 
+
+    ```bash
+    database: news_app
+    table name: news_app, web_crawler
+    ```
+
+6. 执行create_table_for_crawler.sql
+
+    `source create_table_for_crawler.sql`
+
+7. **设置database的character set为utf8。**
+
+    > 1.修改mysql表的字符编码方式:
+    > alter table t_name convert to character set utf8;
+    > 2.修改数据库的字符集
+    > alter database mydb character set utf8;
+    > 3.创建数据库指定数据库的字符集
+    > create database mydb character set utf8;
+
+8. **设置数据库3306端口的可访问性，详见网络教程**
+
+### Step 2. Deploy Frontend & Backend
+
+​		前后端放在同一个服务器`14`上。
+
+#### 2.1 操作步骤
+
+1. 发送脚本和相关安装包到子服务器
+
+2. 安装git, npm, node.js, python3, pip3 等，确保npm和nodejs是新版本。添加public_key到github。
+
+3. 运行脚本clone 前后端仓库到服务器。
+
+4. 运行脚本，配置后端的settings.py并且注意修改config.sh的相关信息（数据库等）
+
+5. 数据库迁移
+    `python3 manage.py migrate`
+
+6. 创建Django超级用户
+
+    >create superuser
+    >
+    >username: TechDailyGroup
+    >
+    >email: admin@fudan.edu.cn
+    >
+    >password: \*\*\*\*\*\*\*\*
+
+7. 运行脚本部署后端
+
+8. 运行脚本配置前端
+
+    ```shell
+    npm install
+    npm run dev
+    ```
+
+#### 2.2 注意事项
+
+1. 前端部分的npm使用方式见下:
 
 ```bash
 # install dependencies
 npm install
-
 # serve with hot reload at localhost:8080
 npm run dev
-
 # build for production with minification
 npm run build
-
 # build for production and view the bundle analyzer report
 npm run build --report
-
 # add android platform:
 cordova platform add android
-
 # build the project(apk):
 cordova build android
 ```
 
-#### 2.2 修改配置
+2. 前端的service/URL.js中的端口和host和后端的ALLOW_HOSTS需要相互对应。
 
-​		安装完成依赖以后，修改frontend\src\service\URLS.js 中 host 和 origin的值，确保ip和对应端口是后端服务器运行所在的ip。然后就可以`npm run dev`了。
+### Step 3. Deploy Crawler & Upload Data
 
-### Part III. tech_daily_web_crawler
+​		爬虫部署在服务器`17`。
 
-这部分目前不太需要在服务器上跑。
+#### 3.1 操作步骤
+
+1. 从主服务器把脚本发给子服务器
+
+2. 登陆子服务器，安装git，java，python3，pip3等环境，添加public_key到github。
+
+3. 运行deploy.sh脚本，clone crawler和frontend的代码到本地。
+
+4. 修改web_crawler的main.sh的脚本信息。
+
+5. 在目录外root模式下运行deploy.sh，部署爬虫。
+
+    > **Note: 爬虫的main.sh中的init_files函数会把爬虫的依赖包下载好，但是因为不可知原因下载有困难，建议把依赖包tech_daily_web_crawler_libs.tar.gz和phantomjs下载好scp到服务器上，注释掉init_files中wget的部分，并且把phantomjs解压好，解压后的文件夹名填写到main.sh中对应信息中。**
+
+6. 可以用`bash main.sh status`查看已经部署好的爬虫状态。
+
+7. 运行后端utils/tech_daily_data_migration.py文件前，需要修改文件中对应的数据库信息和API_HOST，爬虫存储的图片和json文件的路径信息等。
+
+    > **Note: 在运行的时候可能会提醒服务器缺少mysql包，这时候用pip3安装即可。**
+    >
+    > **Warning: 之前在windows环境下写的get_unseparated_path函数在这里不用了，需要注释掉相关的引用部分。**
+
+### Step 4. More Work in the Future
+
+#### 4.1 TODO
+
+1. 编写脚本，定时启动各项服务，自动拨号等等。
+2. 重写前端。
+3. 尽量把这些工作脚本化，服务后台化。
