@@ -5,12 +5,13 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.conf import settings
 
 from account.models import *
 from account.decorators import login_required
 from main.models import *
 from utils.api_utils import get_json_dict, get_permission_denied_json_dict
-from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict
+from utils.util_functions import get_article_dict, get_section_dict, get_md5, get_comment_dict, get_user_dict
 from utils.search_utils import FuncInterface as SearchEngine
 
 def __update_article_images(article):
@@ -102,14 +103,17 @@ def get_article_list(request):
 @require_GET
 def search_for_article(request):
 
-    keyword = request.GET['keyword']
-    try:
-        page = int(request.GET['page'])
-    except:
-        page = 0
+    if settings.DEBUG:
+        article_ids = [51540, 51541, 51542, 51543, 51544, 51545, 51546, 51547, 51548, 51549, 51550, 51551, 51552, 51553, 51554, 51555, 51556, 51557, 51558, 51559]
+    else:
+        keyword = request.GET['keyword']
+        try:
+            page = int(request.GET['page'])
+        except:
+            page = 0
 
-    search_engine = SearchEngine("10.144.5.124", "8983")
-    article_ids = search_engine.query(keyword, page)
+        search_engine = SearchEngine("10.144.5.124", "8983")
+        article_ids = search_engine.query(keyword, page)
 
     json_dict = get_json_dict(data={})
     json_dict['data']['articles'] = []
@@ -165,6 +169,25 @@ def user_like_article_or_not(request):
             pass
 
     return JsonResponse(get_json_dict(data={'like': like}))
+
+@require_GET
+def get_likers(request):
+
+    article_id = int(request.GET['article_id'])
+    page = int(request.GET.get('page', 0))
+
+    ONE_PAGE_SIZE = 20
+    st_index = page * ONE_PAGE_SIZE
+    en_index = (page + 1) * ONE_PAGE_SIZE
+
+    likers = Article.objects.get(id=article_id).likers.all()[st_index:en_index]
+
+    json_dict = get_json_dict(data={})
+    json_dict['data']['likers'] = []
+    for liker in likers:
+        json_dict['data']['likers'].append(get_user_dict(liker))
+
+    return JsonResponse(json_dict)
 
     
 @require_GET
